@@ -11,6 +11,21 @@ export const themeOptions: ThemeOptions = {
       main: Colors.secondary,
     },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+        },
+      },
+    },
+  },
+  custom: {
+    searchBorder: {
+      light: Colors.searchBorder,
+      dark: Colors.white,
+    },
+  },
 };
 
 export const theme = createTheme(themeOptions);
