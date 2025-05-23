@@ -48,7 +48,7 @@ export function MainAppBar(): JSX.Element {
           />
         </IconButton>
 
-        <Stack flexDirection="row" gap={4}>
+        <Stack flexDirection="row" gap={3}>
           <Search />
 
           {isAuthenticated ? (
