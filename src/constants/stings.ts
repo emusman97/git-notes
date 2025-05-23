@@ -5,5 +5,9 @@ export const AppStrings = {
   PublicGists: 'Public Gists',
   OpenMenu: 'Open Menu',
   SignedInAs: 'Signed in as',
-  Logout: 'Logout',
+  Signout: 'Signout',
+  YourGists: 'Your Gists',
+  StarredGists: 'Starred Gists',
+  YourGithubProfile: 'Your GitHub profile',
+  Help: 'Help',
 } as const;
