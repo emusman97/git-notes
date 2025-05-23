@@ -1,6 +1,7 @@
 import { isError } from '@/utils';
 import {
   GithubAuthProvider,
+  onAuthStateChanged,
   signInWithPopup,
   type AuthError,
 } from 'firebase/auth';
@@ -11,6 +12,8 @@ import {
   UNKNOWN_ERROR_MESSAGE,
 } from '../constants';
 import type {
+  FirebaseUser,
+  OnAuthStateChangedListener,
   SignInWithGithubFailureResult,
   SignInWithGithubResult,
 } from './types';
@@ -57,9 +60,25 @@ function createAuth() {
       return failureResult;
     }
   };
+  const logout = async () => {
+    try {
+      await firebaseAuth.signOut();
+    } catch (error) {
+      console.log('Error logging out', error);
+    }
+  };
+
+  const addOnAuthChangeListener = (listener: OnAuthStateChangedListener) =>
+    onAuthStateChanged(firebaseAuth, (user) => listener(user));
+
+  const getUser = (): FirebaseUser | null => firebaseAuth.currentUser;
 
   return {
     signInWithGithub,
+    addOnAuthChangeListener,
+    logout,
+
+    getUser,
   };
 }
 

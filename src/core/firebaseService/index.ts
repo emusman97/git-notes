@@ -7,3 +7,5 @@ function createFirebaseService() {
 }
 
 export const FirebaseService = createFirebaseService();
+
+export * from './auth/types';

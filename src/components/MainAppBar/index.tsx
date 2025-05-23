@@ -1,16 +1,40 @@
 import { Images } from '@/assets';
 import { AppStrings } from '@/constants';
+import { FirebaseService, LocalStorageService } from '@/core';
 import { RoutePaths } from '@/routes';
-import { Box, Button, IconButton, Stack, Toolbar } from '@mui/material';
+import { useUserState } from '@/state';
+import { Box, IconButton, Stack, Toolbar } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
-import type { JSX } from 'react';
+import { useState, type JSX } from 'react';
 import { useNavigate } from 'react-router';
-import { Search } from './components';
+import { AvatarMenu } from '../AvatarMenu';
+import { LoadingButton, Search } from './components';
+import { useAuthStateChange } from '@/hooks';
 
 export function MainAppBar(): JSX.Element {
+  const { isAuthenticated } = useUserState();
+
   const navigate = useNavigate();
+  useAuthStateChange();
+
+  const [loading, setLoading] = useState(false);
 
   const gotoHome = () => navigate(RoutePaths.Root);
+
+  const handleLogin = async () => {
+    setLoading(true);
+
+    const result = await FirebaseService.Auth.signInWithGithub();
+
+    if (result.success) {
+      LocalStorageService.setString(
+        'GithubToken',
+        result.value?.accessToken ?? ''
+      );
+    }
+
+    setLoading(false);
+  };
 
   return (
     <AppBar position="relative">
@@ -27,9 +51,19 @@ export function MainAppBar(): JSX.Element {
         <Stack flexDirection="row" gap={4}>
           <Search />
 
-          <Button variant="contained" color="secondary" sx={{ pl: 4, pr: 4 }}>
-            {AppStrings.Login}
-          </Button>
+          {isAuthenticated ? (
+            <AvatarMenu />
+          ) : (
+            <LoadingButton
+              variant="contained"
+              color="secondary"
+              loading={loading}
+              loadingPosition="start"
+              onClick={handleLogin}
+            >
+              {AppStrings.Login}
+            </LoadingButton>
+          )}
         </Stack>
       </Toolbar>
     </AppBar>

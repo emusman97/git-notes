@@ -14,3 +14,8 @@ export const safeParseNumber = (value: string, defaultValue = -1) => {
     return defaultValue;
   }
 };
+
+export const getInitials = (name: string) => {
+  const [fname, lname] = name.split(' ');
+  return `${fname?.toUpperCase()?.[0]} ${lname?.toUpperCase()?.[0]}`;
+};
