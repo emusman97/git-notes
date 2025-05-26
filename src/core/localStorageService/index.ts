@@ -1,8 +1,8 @@
-import { LocalStorageKeys, type LocalStorageKey } from './types';
+import { type LocalStorageKey } from './types';
 
 function createLocalStorageService() {
   const setString = (key: LocalStorageKey, value: string) => {
-    localStorage.setItem(LocalStorageKeys[key], value);
+    localStorage.setItem(key, value);
   };
   const getString = (key: LocalStorageKey) => {
     return localStorage.getItem(key);

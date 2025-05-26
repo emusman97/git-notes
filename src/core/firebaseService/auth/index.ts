@@ -6,17 +6,14 @@ import {
   type AuthError,
 } from 'firebase/auth';
 import { firebaseAuth } from '../common';
-import {
-  githubOAuthScopes,
-  UNKNOWN_ERROR_CODE,
-  UNKNOWN_ERROR_MESSAGE,
-} from '../constants';
+import { githubOAuthScopes, UNKNOWN_ERROR_CODE } from '../constants';
 import type {
   FirebaseUser,
   OnAuthStateChangedListener,
   SignInWithGithubFailureResult,
   SignInWithGithubResult,
 } from './types';
+import { UNKNOWN_ERROR_MESSAGE } from '@/constants';
 
 function createAuth() {
   const provider = new GithubAuthProvider();
@@ -39,7 +36,7 @@ function createAuth() {
       return {
         success: true,
         failure: false,
-        value: { accessToken },
+        value: { accessToken, user: result.user },
         cause: null,
       };
     } catch (error) {

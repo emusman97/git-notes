@@ -8,6 +8,7 @@ export type AuthError = FirebaseAuthError | Error | null;
 
 export interface SuccessData {
   accessToken?: string;
+  user: FirebaseUser;
 }
 
 export type SignInWithGithubSuccessResult<D> = Omit<

@@ -2,16 +2,19 @@ import { Images } from '@/assets';
 import { AppStrings } from '@/constants';
 import { FirebaseService, LocalStorageService } from '@/core';
 import { RoutePaths } from '@/routes';
-import { useUserState } from '@/state';
+import { useAppDispatch, userActions, useUserState } from '@/state';
 import { Box, IconButton, Stack, Toolbar } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import { useState, type JSX } from 'react';
 import { useNavigate } from 'react-router';
 import { AvatarMenu } from '../AvatarMenu';
 import { LoadingButton, Search } from './components';
+import { createUser } from '@/models';
 import { useAuthStateChange } from '@/hooks';
 
 export function MainAppBar(): JSX.Element {
+  const dispatch = useAppDispatch();
+
   const { isAuthenticated } = useUserState();
 
   const navigate = useNavigate();
@@ -27,10 +30,12 @@ export function MainAppBar(): JSX.Element {
     const result = await FirebaseService.Auth.signInWithGithub();
 
     if (result.success) {
-      LocalStorageService.setString(
-        'GithubToken',
-        result.value?.accessToken ?? ''
-      );
+      const token = result.value?.accessToken ?? '';
+
+      LocalStorageService.setString('GithubToken', token);
+      if (result.value?.user) {
+        dispatch(userActions.login(createUser(result.value.user)));
+      }
     }
 
     setLoading(false);

@@ -1,6 +1,6 @@
 import { MainLayout, PageHeadingContainer } from '@/components';
 import { AppStrings } from '@/constants';
-import type { JSX } from 'react';
+import { type JSX } from 'react';
 
 export function HomePage(): JSX.Element {
   return (
