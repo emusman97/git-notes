@@ -25,6 +25,9 @@ export const themeOptions: ThemeOptions = {
       light: Colors.searchBorder,
       dark: Colors.white,
     },
+    tableHeader: {
+      main: Colors.tableHeader,
+    },
   },
 };
 

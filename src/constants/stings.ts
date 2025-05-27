@@ -10,4 +10,12 @@ export const AppStrings = {
   StarredGists: 'Starred Gists',
   YourGithubProfile: 'Your GitHub profile',
   Help: 'Help',
+  Name: 'Name',
+  NotebookName: 'Notebook Name',
+  Keyword: 'Keyword',
+  Updated: 'Updated',
+  Page: 'Page',
+  Of: 'of',
+  UpdatedAt: 'Updated at',
+  InvalidDate: 'invalid date',
 } as const;

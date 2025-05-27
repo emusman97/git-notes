@@ -8,13 +8,14 @@ export interface GistUser {
 
 export interface Gist {
   id?: string;
-  title?: string;
   descriptiom?: string;
   public?: boolean;
   url?: string;
   truncated?: boolean;
   owner?: GistUser;
   user?: GistUser;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export type Gists = Gist[];

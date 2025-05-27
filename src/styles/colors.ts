@@ -5,4 +5,5 @@ export const Colors = {
   primary: '#003b44',
   secondary: white,
   searchBorder: '#FFFFFF80',
+  tableHeader: '#e3e3e3',
 } as const;

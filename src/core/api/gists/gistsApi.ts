@@ -28,8 +28,6 @@ export const gistsApi = createApi({
         headers.set(AUTH_HEADER_KEY, getAuthHeaderValue(token));
       }
 
-      console.log({ headers }, token);
-
       return headers;
     },
   }),
@@ -46,14 +44,14 @@ export const gistsApi = createApi({
         }),
         transformResponse(response, meta, params) {
           const linkHeader = meta?.response?.headers?.get(LINK_HEADER_KEY);
-          console.log({ linkHeader });
           const pagination = parseLinkHeader(linkHeader ?? '');
 
           return {
             data: response as Gists,
             page: params.page ?? 1,
-            per_page: params.per_page ?? DEFAULT_GISTS_PER_PAGE,
-            total_pages: pagination.totalPages,
+            perPage: params.per_page ?? DEFAULT_GISTS_PER_PAGE,
+            totalPages: pagination.totalPages,
+            hasNextPage: pagination.hasNextPage,
           };
         },
         providesTags: ['PublicGists'],

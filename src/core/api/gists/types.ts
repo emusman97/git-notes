@@ -5,7 +5,8 @@ export interface GetGistsParams {
 
 export interface ListResponse<T> {
   page: number;
-  per_page: number;
-  total_pages: number;
+  perPage: number;
+  totalPages: number;
+  hasNextPage: boolean;
   data: T[];
 }
