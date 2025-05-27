@@ -1,4 +1,9 @@
-import { Icons, MainLayout, PageHeadingContainer } from '@/components';
+import {
+  Icons,
+  MainLayout,
+  PageHeadingContainer,
+  type PaginationProps,
+} from '@/components';
 import { AppStrings } from '@/constants';
 import { useFetchPublicGistsQuery } from '@/core';
 import { useUserState } from '@/state';
@@ -8,8 +13,8 @@ import {
   type ToggleButtonGroupProps,
 } from '@mui/material';
 import { skipToken } from '@reduxjs/toolkit/query';
-import { useEffect, useState, type JSX } from 'react';
-import { ListSkeleton, Table } from './components';
+import { useEffect, useMemo, useState, type JSX } from 'react';
+import { GistsGrid, ListSkeleton, Table } from './components';
 import { NUMBER_OF_ITEMS_PER_PAGE } from './constants';
 import { GistsLayouts, type GistsLayout } from './types';
 
@@ -39,6 +44,19 @@ export function HomePage(): JSX.Element {
   };
   const handlePreviousPage = () => setPage((page) => page - 1);
   const handleNextPage = () => setPage((page) => page + 1);
+
+  const paginationProps = useMemo(
+    () =>
+      ({
+        page,
+        totalPages: totalPages,
+        nextButtonLoading: page !== 1 && isFetching,
+        onPreviousButtonClick: handlePreviousPage,
+        onNextButtonClick: handleNextPage,
+      }) satisfies PaginationProps,
+    [isFetching, page, totalPages]
+  );
+  const gistsData = data?.data ?? [];
 
   useEffect(() => {
     if (isSuccess && data.hasNextPage) {
@@ -71,17 +89,10 @@ export function HomePage(): JSX.Element {
 
       {isLoading || isAuthenticated === false ? (
         <ListSkeleton />
+      ) : selectedLayout === GistsLayouts.Table ? (
+        <Table data={gistsData} paginationProps={paginationProps} />
       ) : (
-        <Table
-          data={data?.data ?? []}
-          paginationProps={{
-            page,
-            totalPages: totalPages,
-            nextButtonLoading: page !== 1 && isFetching,
-            onPreviousButtonClick: handlePreviousPage,
-            onNextButtonClick: handleNextPage,
-          }}
-        />
+        <GistsGrid data={gistsData} paginationProps={paginationProps} />
       )}
     </MainLayout>
   );

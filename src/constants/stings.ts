@@ -18,4 +18,8 @@ export const AppStrings = {
   Of: 'of',
   UpdatedAt: 'Updated at',
   InvalidDate: 'invalid date',
+  Created: 'Created',
+  GistName: 'gist_name',
+  JohnDoe: 'John Doe',
+  View: 'View',
 } as const;

@@ -1,7 +1,7 @@
 import { GistForkStarIconGroup, Pagination } from '@/components';
 import { AppStrings } from '@/constants';
 import type { GistUser } from '@/models';
-import { getInitials, timeAgo } from '@/utils';
+import { getFilename, getInitials, timeAgo } from '@/utils';
 import {
   Avatar,
   Chip,
@@ -27,8 +27,8 @@ export function Table({
 }: TableProps): JSX.Element {
   const renderUserInfo = (user?: GistUser) => (
     <Stack flexDirection="row" alignItems="center" gap={1}>
-      <Avatar src={user?.avatar_url}>{getInitials(user?.name ?? '')}</Avatar>
-      <Typography>{user?.name}</Typography>
+      <Avatar src={user?.avatar_url}>{getInitials(user?.login ?? '')}</Avatar>
+      <Typography>{user?.login}</Typography>
     </Stack>
   );
 
@@ -49,7 +49,7 @@ export function Table({
             {data.map((row) => (
               <TableRow id={row.id}>
                 <TableCell>{renderUserInfo(row.user ?? row.owner)}</TableCell>
-                <TableCell>{AppStrings.NotebookName}</TableCell>
+                <TableCell>{getFilename(row.files ?? {})}</TableCell>
                 <TableCell>
                   <Chip color="primary" label={AppStrings.Keyword} />
                 </TableCell>
