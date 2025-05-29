@@ -24,7 +24,7 @@ export const Gists = {
       return response;
     }
 
-    const { hasNextPage } = parseLinkHeader(response.meta.headers.Link);
+    const { hasNextPage } = parseLinkHeader(response.meta.headers.link);
 
     return createApiSuccessResult(
       {
