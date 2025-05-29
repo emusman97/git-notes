@@ -1,6 +1,6 @@
 import { Images } from '@/assets';
 import { AppStrings } from '@/constants';
-import { FirebaseService, LocalStorageService } from '@/core';
+import { FirebaseService, LocalStorageKeys, LocalStorageService } from '@/core';
 import { RoutePaths } from '@/routes';
 import { useAppDispatch, userActions, useUserState } from '@/state';
 import { Box, IconButton, Stack, Toolbar } from '@mui/material';
@@ -32,7 +32,7 @@ export function MainAppBar(): JSX.Element {
     if (result.success) {
       const token = result.value?.accessToken ?? '';
 
-      LocalStorageService.setString('GithubToken', token);
+      LocalStorageService.setString(LocalStorageKeys.GithubToken, token);
       if (result.value?.user) {
         dispatch(userActions.login(createUser(result.value.user)));
       }
