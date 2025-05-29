@@ -1,3 +1,10 @@
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    withAuth?: boolean;
+    accessToken?: string;
+  }
+}
+
 export interface SuccessResult<D, C> {
   success: true;
   failure: false;

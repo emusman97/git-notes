@@ -5,14 +5,13 @@ import {
   type PaginationProps,
 } from '@/components';
 import { AppStrings } from '@/constants';
-import { useFetchPublicGistsQuery } from '@/core';
+import { useGetPublicGistsQuery } from '@/core';
 import { useUserState } from '@/state';
 import {
   ToggleButton,
   ToggleButtonGroup,
   type ToggleButtonGroupProps,
 } from '@mui/material';
-import { skipToken } from '@reduxjs/toolkit/query';
 import { useEffect, useMemo, useState, type JSX } from 'react';
 import { GistsGrid, ListSkeleton, Table } from './components';
 import { NUMBER_OF_ITEMS_PER_PAGE } from './constants';
@@ -26,9 +25,11 @@ export function HomePage(): JSX.Element {
   );
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const { data, isLoading, isFetching, isSuccess } = useFetchPublicGistsQuery(
-    isAuthenticated ? { page, per_page: NUMBER_OF_ITEMS_PER_PAGE } : skipToken
-  );
+  const { data, isFetching, isLoading, isSuccess } = useGetPublicGistsQuery({
+    runQuery: isAuthenticated,
+    page,
+    itemsPerPage: NUMBER_OF_ITEMS_PER_PAGE,
+  });
 
   const resetPagination = () => {
     setPage(1);
@@ -59,10 +60,10 @@ export function HomePage(): JSX.Element {
   const gistsData = data?.data ?? [];
 
   useEffect(() => {
-    if (isSuccess && data.hasNextPage) {
+    if (isSuccess && data.hasMorePage) {
       setTotalPages(page + 1);
     }
-  }, [data?.hasNextPage, isSuccess, page]);
+  }, [data?.hasMorePage, isSuccess, page]);
 
   const renderListLayoutToggle = () => (
     <ToggleButtonGroup

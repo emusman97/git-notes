@@ -6,21 +6,25 @@ import '@/index.css';
 import { store } from '@/state';
 import { MainRoutes } from '@/routes';
 import { theme } from '@/styles';
+import { ThemeProvider } from '@mui/material';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './core';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { ThemeProvider } from '@mui/material';
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <StrictMode>
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <MainRoutes />
-        </ThemeProvider>
-      </Provider>
+      <QueryClientProvider client={queryClient}>
+        <Provider store={store}>
+          <ThemeProvider theme={theme}>
+            <MainRoutes />
+          </ThemeProvider>
+        </Provider>
+      </QueryClientProvider>
     </StrictMode>
   </BrowserRouter>
 );

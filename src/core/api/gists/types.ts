@@ -1,12 +1,7 @@
-export interface GetGistsParams {
-  per_page?: number;
-  page?: number;
-}
+import type { Gists } from '@/models';
 
-export interface ListResponse<T> {
-  page: number;
-  perPage: number;
-  totalPages: number;
-  hasNextPage: boolean;
-  data: T[];
+export type GetGistsApiResponse = Gists;
+export interface FetchPublicGistsResponse {
+  data?: Gists;
+  hasMorePage: boolean;
 }
