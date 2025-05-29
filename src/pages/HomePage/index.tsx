@@ -41,7 +41,6 @@ export function HomePage(): JSX.Element {
     newValue
   ) => {
     setSelectedLayout(newValue);
-    resetPagination();
   };
   const handlePreviousPage = () => setPage((page) => page - 1);
   const handleNextPage = () => setPage((page) => page + 1);
@@ -63,7 +62,7 @@ export function HomePage(): JSX.Element {
     if (isSuccess && data.hasMorePage) {
       setTotalPages(page + 1);
     }
-  }, [data?.hasMorePage, isSuccess, page]);
+  }, [data?.hasMorePage, isSuccess]);
 
   const renderListLayoutToggle = () => (
     <ToggleButtonGroup
