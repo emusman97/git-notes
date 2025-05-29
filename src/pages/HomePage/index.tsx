@@ -8,6 +8,7 @@ import { AppStrings } from '@/constants';
 import { useGetPublicGistsQuery } from '@/core';
 import { useUserState } from '@/state';
 import {
+  Stack,
   ToggleButton,
   ToggleButtonGroup,
   type ToggleButtonGroupProps,
@@ -84,10 +85,14 @@ export function HomePage(): JSX.Element {
 
       {isLoading || isAuthenticated === false ? (
         <ListSkeleton />
-      ) : selectedLayout === GistsLayouts.Table ? (
-        <Table data={gistsData} paginationProps={paginationProps} />
       ) : (
-        <GistsGrid data={gistsData} paginationProps={paginationProps} />
+        <Stack>
+          {selectedLayout === GistsLayouts.Table ? (
+            <Table data={gistsData} paginationProps={paginationProps} />
+          ) : (
+            <GistsGrid data={gistsData} paginationProps={paginationProps} />
+          )}
+        </Stack>
       )}
     </MainLayout>
   );

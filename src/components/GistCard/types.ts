@@ -7,4 +7,5 @@ export interface GistCardProps extends PaperProps {
 
 export interface CodeBlockSnippetProps {
   files: NonNullable<Gist['files']>;
+  gistUpdatedAt: string;
 }

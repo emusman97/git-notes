@@ -18,7 +18,10 @@ export function GistCard({
       {...restProps}
       sx={{ display: 'flex', flexDirection: 'column', ...sx }}
     >
-      <CodeBlockSnippet files={data.files ?? {}} />
+      <CodeBlockSnippet
+        files={data.files ?? {}}
+        gistUpdatedAt={data.updated_at ?? ''}
+      />
       <Stack flex={1} flexDirection="row" alignItems="center" p={1} gap={1}>
         <Avatar src={user.avatar_url}>{getInitials(user.login ?? '')}</Avatar>
 

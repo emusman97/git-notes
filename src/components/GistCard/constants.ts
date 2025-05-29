@@ -1,0 +1,1 @@
+export const NUMBER_OF_LINES_TO_PREVIEW = 14;

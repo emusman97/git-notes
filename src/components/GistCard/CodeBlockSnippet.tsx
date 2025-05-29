@@ -1,10 +1,11 @@
 import { AppStrings } from '@/constants';
+import { useFetchFileQuery } from '@/core';
 import { useBooleanState } from '@/hooks';
 import { theme } from '@/styles';
 import { Stack, styled, Typography } from '@mui/material';
 import { useMemo, type JSX } from 'react';
 import type { CodeBlockSnippetProps } from './types';
-import { getFilename } from '@/utils';
+import { CodeBlock } from '../CodeBlock';
 
 const ContainerStack = styled(Stack)(({ theme }) => ({
   position: 'relative',
@@ -18,13 +19,27 @@ const ContainerStack = styled(Stack)(({ theme }) => ({
 
 export function CodeBlockSnippet({
   files,
+  gistUpdatedAt,
 }: CodeBlockSnippetProps): JSX.Element {
+  const file = useMemo(() => Object.values(files)?.[0], [files]);
+
+  const { data } = useFetchFileQuery(file, gistUpdatedAt);
   const [hovered, hover, unHover] = useBooleanState();
-  const filename = useMemo(() => getFilename(files), [files]);
 
   return (
     <ContainerStack onMouseEnter={hover} onMouseLeave={unHover}>
-      <Stack sx={{ height: 200 }}></Stack>
+      <Stack sx={{ height: 200, overflow: 'auto' }}>
+        <CodeBlock
+          code={data ?? ''}
+          language={file.language ?? ''}
+          preElStyles={{
+            padding: 10,
+            overflow: 'hidden',
+            height: '100%',
+          }}
+          numberOfLinesToRender={14}
+        />
+      </Stack>
       {hovered && (
         <Stack
           sx={{
@@ -41,7 +56,7 @@ export function CodeBlockSnippet({
           <Typography fontSize={11}>
             {AppStrings.View}{' '}
             <Typography fontSize={11} fontWeight={700} component="span">
-              {filename}
+              {file.filename}
             </Typography>
           </Typography>
         </Stack>
