@@ -11,8 +11,13 @@ import { AvatarMenu } from '../AvatarMenu';
 import { LoadingButton, Search } from './components';
 import { createUser } from '@/models';
 import { useAuthStateChange } from '@/hooks';
+import type { MainAppBarProps } from './types';
 
-export function MainAppBar(): JSX.Element {
+export function MainAppBar({
+  showSearch = false,
+  query,
+  onQueryChange,
+}: MainAppBarProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const { isAuthenticated } = useUserState();
@@ -54,7 +59,7 @@ export function MainAppBar(): JSX.Element {
         </IconButton>
 
         <Stack flexDirection="row" gap={3}>
-          <Search />
+          {showSearch && <Search value={query} onValueChange={onQueryChange} />}
 
           {isAuthenticated ? (
             <AvatarMenu />
@@ -74,3 +79,5 @@ export function MainAppBar(): JSX.Element {
     </AppBar>
   );
 }
+
+export * from './types';

@@ -17,10 +17,12 @@ import { useEffect, useMemo, useState, type JSX } from 'react';
 import { GistsGrid, ListSkeleton, Table } from './components';
 import { NUMBER_OF_ITEMS_PER_PAGE } from './constants';
 import { GistsLayouts, type GistsLayout } from './types';
+import { useSearchQuery } from '@/hooks';
 
 export function HomePage(): JSX.Element {
   const { isAuthenticated } = useUserState();
 
+  const { query, handleQueryValueChange } = useSearchQuery();
   const [selectedLayout, setSelectedLayout] = useState<GistsLayout>(
     GistsLayouts.Table
   );
@@ -77,7 +79,7 @@ export function HomePage(): JSX.Element {
   );
 
   return (
-    <MainLayout>
+    <MainLayout showSearch query={query} onQueryChange={handleQueryValueChange}>
       <PageHeadingContainer
         title={AppStrings.PublicGists}
         RightComponent={renderListLayoutToggle()}
