@@ -31,11 +31,6 @@ export function HomePage(): JSX.Element {
     itemsPerPage: NUMBER_OF_ITEMS_PER_PAGE,
   });
 
-  const resetPagination = () => {
-    setPage(1);
-    setTotalPages(1);
-  };
-
   const handleValueChange: ToggleButtonGroupProps['onChange'] = (
     _,
     newValue
