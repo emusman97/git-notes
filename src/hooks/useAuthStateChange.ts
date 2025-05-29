@@ -1,4 +1,4 @@
-import { FirebaseService, LocalStorageService } from '@/core';
+import { FirebaseService, LocalStorageKeys, LocalStorageService } from '@/core';
 import { createUser } from '@/models';
 import { useAppDispatch, userActions, useUserState } from '@/state';
 import { useEffect } from 'react';
@@ -17,7 +17,7 @@ export function useAuthStateChange() {
           }
         } else if (isAuthenticated) {
           dispatch(userActions.setIsAuthenticated(false));
-          LocalStorageService.clearString('GithubToken');
+          LocalStorageService.clearString(LocalStorageKeys.GithubToken);
         }
       }),
     [dispatch, isAuthenticated]

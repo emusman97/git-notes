@@ -15,3 +15,5 @@ function createLocalStorageService() {
 }
 
 export const LocalStorageService = createLocalStorageService();
+
+export * from './types';
