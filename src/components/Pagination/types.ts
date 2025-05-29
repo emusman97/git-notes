@@ -6,6 +6,8 @@ export interface PaginationProps extends StackProps {
   page: number;
   prevButtonLoading?: boolean;
   nextButtonLoading?: boolean;
+  disablePrevButton?: boolean;
+  disableNextButton?: boolean;
   onPreviousButtonClick?: Callback;
   onNextButtonClick?: Callback;
 }

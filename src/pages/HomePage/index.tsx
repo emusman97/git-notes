@@ -6,6 +6,7 @@ import {
 } from '@/components';
 import { AppStrings } from '@/constants';
 import { useGetPublicGistsQuery } from '@/core';
+import { useSearchQuery } from '@/hooks';
 import { useUserState } from '@/state';
 import {
   Stack,
@@ -13,11 +14,10 @@ import {
   ToggleButtonGroup,
   type ToggleButtonGroupProps,
 } from '@mui/material';
-import { useEffect, useMemo, useState, type JSX } from 'react';
+import { useCallback, useEffect, useMemo, useState, type JSX } from 'react';
 import { GistsGrid, ListSkeleton, Table } from './components';
 import { NUMBER_OF_ITEMS_PER_PAGE } from './constants';
 import { GistsLayouts, type GistsLayout } from './types';
-import { useSearchQuery } from '@/hooks';
 
 export function HomePage(): JSX.Element {
   const { isAuthenticated } = useUserState();
@@ -27,12 +27,15 @@ export function HomePage(): JSX.Element {
     GistsLayouts.Table
   );
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const { data, isFetching, isLoading, isSuccess } = useGetPublicGistsQuery({
-    runQuery: isAuthenticated,
-    page,
-    itemsPerPage: NUMBER_OF_ITEMS_PER_PAGE,
-  });
+  const { data, isFetching, isLoading, isSuccess, hasNextPage, fetchNextPage } =
+    useGetPublicGistsQuery({
+      runQuery: isAuthenticated,
+      page,
+      itemsPerPage: NUMBER_OF_ITEMS_PER_PAGE,
+    });
+  const totalPages = hasNextPage
+    ? (data?.pages.length ?? 0) + 1
+    : (data?.pages?.length ?? 0);
 
   const handleValueChange: ToggleButtonGroupProps['onChange'] = (
     _,
@@ -41,7 +44,15 @@ export function HomePage(): JSX.Element {
     setSelectedLayout(newValue);
   };
   const handlePreviousPage = () => setPage((page) => page - 1);
-  const handleNextPage = () => setPage((page) => page + 1);
+  const handleNextPage = useCallback(() => {
+    const nextPage = page + 1;
+
+    if (nextPage === totalPages && hasNextPage) {
+      fetchNextPage();
+    } else {
+      setPage((page) => page + 1);
+    }
+  }, [fetchNextPage, hasNextPage, page, totalPages]);
 
   const paginationProps = useMemo(
     () =>
@@ -52,15 +63,12 @@ export function HomePage(): JSX.Element {
         onPreviousButtonClick: handlePreviousPage,
         onNextButtonClick: handleNextPage,
       }) satisfies PaginationProps,
-    [isFetching, page, totalPages]
+    [handleNextPage, isFetching, page, totalPages]
   );
-  const gistsData = data?.data ?? [];
-
-  useEffect(() => {
-    if (isSuccess && data.hasMorePage) {
-      setTotalPages(page + 1);
-    }
-  }, [data?.hasMorePage, isSuccess]);
+  const gistsData = useMemo(
+    () => data?.pages?.[Math.max(page - 1, 0)]?.data ?? [],
+    [data?.pages, page]
+  );
 
   const renderListLayoutToggle = () => (
     <ToggleButtonGroup
@@ -77,6 +85,12 @@ export function HomePage(): JSX.Element {
       </ToggleButton>
     </ToggleButtonGroup>
   );
+
+  useEffect(() => {
+    if (isSuccess && totalPages !== 2) {
+      setPage((page) => page + 1);
+    }
+  }, [isSuccess, totalPages]);
 
   return (
     <MainLayout showSearch query={query} onQueryChange={handleQueryValueChange}>

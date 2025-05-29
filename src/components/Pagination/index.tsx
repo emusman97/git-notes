@@ -18,6 +18,8 @@ export function Pagination({
   totalPages,
   prevButtonLoading,
   nextButtonLoading,
+  disablePrevButton,
+  disableNextButton,
   onPreviousButtonClick,
   onNextButtonClick,
   ...restProps
@@ -25,7 +27,7 @@ export function Pagination({
   return (
     <Stack gap={2} flexDirection="row" alignItems="center" {...restProps}>
       <IconButton
-        disabled={page === 1}
+        disabled={page === 1 || disablePrevButton}
         loading={prevButtonLoading}
         sx={{ padding: 0 }}
         onClick={onPreviousButtonClick}
@@ -38,7 +40,7 @@ export function Pagination({
         {AppStrings.Of} {totalPages}
       </Typography>
       <IconButton
-        disabled={page === totalPages}
+        disabled={page === totalPages || disableNextButton}
         loading={nextButtonLoading}
         onClick={onNextButtonClick}
         sx={{ padding: 0 }}
