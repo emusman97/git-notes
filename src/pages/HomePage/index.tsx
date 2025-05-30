@@ -1,4 +1,5 @@
 import {
+  GistsGrid,
   Icons,
   MainLayout,
   PageHeadingContainer,
@@ -15,7 +16,7 @@ import {
   type ToggleButtonGroupProps,
 } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState, type JSX } from 'react';
-import { GistsGrid, ListSkeleton, Table } from './components';
+import { ListSkeleton, Table } from './components';
 import { NUMBER_OF_ITEMS_PER_PAGE } from './constants';
 import { GistsLayouts, type GistsLayout } from './types';
 
@@ -113,7 +114,11 @@ export function HomePage(): JSX.Element {
             {selectedLayout === GistsLayouts.Table ? (
               <Table data={gistsData} paginationProps={paginationProps} />
             ) : (
-              <GistsGrid data={gistsData} paginationProps={paginationProps} />
+              <GistsGrid
+                data={gistsData}
+                gridContainerProps={{ spacing: { xs: 12, sm: 4 } }}
+                paginationProps={paginationProps}
+              />
             )}
           </Stack>
         )
