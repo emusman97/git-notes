@@ -28,7 +28,16 @@ export function createApiReqHandler({
   if (addTokenInterceptor) {
     axios.interceptors.request.use((req) => {
       if (req.withAuth) {
-        req.headers.Authorization = getAuthHeaderValue();
+        const authHeaderValue = getAuthHeaderValue();
+        if (authHeaderValue === '') {
+          const controller = new AbortController();
+
+          controller.abort('You forgot to set valid token');
+
+          return { ...req, signal: controller.signal };
+        }
+
+        req.headers.Authorization = authHeaderValue;
       }
 
       return req;

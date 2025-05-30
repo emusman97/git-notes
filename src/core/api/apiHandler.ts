@@ -11,6 +11,6 @@ export const GistsApiHandler = createApiReqHandler({
   getAuthHeaderValue() {
     const token = LocalStorageService.getString(LocalStorageKeys.GithubToken);
 
-    return `token ${token}`;
+    return token?.trim() === '' ? '' : `token ${token}`;
   },
 });

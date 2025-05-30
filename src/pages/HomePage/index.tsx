@@ -29,9 +29,9 @@ export function HomePage(): JSX.Element {
   const [page, setPage] = useState(1);
   const { data, isFetching, isLoading, isSuccess, hasNextPage, fetchNextPage } =
     useGetPublicGistsQuery({
-      runQuery: isAuthenticated,
       page,
       itemsPerPage: NUMBER_OF_ITEMS_PER_PAGE,
+      withAuth: isAuthenticated,
     });
   const totalPages = hasNextPage
     ? (data?.pages.length ?? 0) + 1
@@ -73,7 +73,7 @@ export function HomePage(): JSX.Element {
   const renderListLayoutToggle = () => (
     <ToggleButtonGroup
       exclusive
-      disabled={isAuthenticated === false}
+      disabled={gistsData.length === 0}
       value={selectedLayout}
       onChange={handleValueChange}
     >
@@ -92,6 +92,12 @@ export function HomePage(): JSX.Element {
     }
   }, [isSuccess, totalPages]);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      setPage(1);
+    }
+  }, [isAuthenticated]);
+
   return (
     <MainLayout showSearch query={query} onQueryChange={handleQueryValueChange}>
       <PageHeadingContainer
@@ -99,16 +105,18 @@ export function HomePage(): JSX.Element {
         RightComponent={renderListLayoutToggle()}
       />
 
-      {isLoading || isAuthenticated === false ? (
+      {isLoading || gistsData.length === 0 ? (
         <ListSkeleton />
       ) : (
-        <Stack>
-          {selectedLayout === GistsLayouts.Table ? (
-            <Table data={gistsData} paginationProps={paginationProps} />
-          ) : (
-            <GistsGrid data={gistsData} paginationProps={paginationProps} />
-          )}
-        </Stack>
+        gistsData.length > 0 && (
+          <Stack>
+            {selectedLayout === GistsLayouts.Table ? (
+              <Table data={gistsData} paginationProps={paginationProps} />
+            ) : (
+              <GistsGrid data={gistsData} paginationProps={paginationProps} />
+            )}
+          </Stack>
+        )
       )}
     </MainLayout>
   );

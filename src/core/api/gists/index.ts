@@ -2,18 +2,25 @@ import { GistsApiHandler } from '../apiHandler';
 import { ApiEndpoints } from '../constants';
 import type { ApiResult } from '../types';
 import { createApiSuccessResult } from '../utils';
-import type { FetchPublicGistsResponse, GetGistsApiResponse } from './types';
+import type {
+  FetchPublicGistsRequestParams,
+  FetchPublicGistsResponse,
+  GetGistsApiResponse,
+} from './types';
 import { parseLinkHeader } from './utils';
 
 export const Gists = {
-  fetchPublic: async (
-    page: number,
-    itemsPerPage: number
-  ): Promise<ApiResult<FetchPublicGistsResponse>> => {
+  fetchPublic: async ({
+    withAuth,
+    page,
+    itemsPerPage,
+  }: FetchPublicGistsRequestParams): Promise<
+    ApiResult<FetchPublicGistsResponse>
+  > => {
     const response = await GistsApiHandler.makeApiRequest<GetGistsApiResponse>({
       endpoint: ApiEndpoints.Public,
       method: 'Get',
-      withAuth: true,
+      withAuth,
       query: {
         page: `${page}`,
         per_page: `${itemsPerPage}`,
