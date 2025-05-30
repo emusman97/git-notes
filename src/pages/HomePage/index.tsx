@@ -117,6 +117,7 @@ export function HomePage(): JSX.Element {
               <GistsGrid
                 data={gistsData}
                 gridContainerProps={{ spacing: { xs: 12, sm: 4 } }}
+                gridItemProps={{ size: 4 }}
                 paginationProps={paginationProps}
               />
             )}

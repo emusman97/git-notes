@@ -5,5 +5,6 @@ import type { GridProps } from '@mui/material';
 export interface GistsGridProps {
   data: Gists;
   paginationProps: PaginationProps;
-  gridContainerProps?: GridProps;
+  gridContainerProps: GridProps;
+  gridItemProps: GridProps;
 }
