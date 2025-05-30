@@ -8,13 +8,14 @@ export function GistsGrid({
   paginationProps,
   gridContainerProps,
   gridItemProps,
+  gistCardProps,
 }: GistsGridProps): JSX.Element {
   return (
     <Stack gap={2}>
       <Grid container {...gridContainerProps}>
         {data.map((item) => (
           <Grid key={item.id} {...gridItemProps}>
-            <GistCard sx={{ height: '100%' }} data={item} />
+            <GistCard {...gistCardProps} data={item} />
           </Grid>
         ))}
       </Grid>
