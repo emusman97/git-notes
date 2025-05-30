@@ -5,6 +5,9 @@ export declare module '@mui/material/styles' {
         light?: string;
         dark?: string;
       };
+      tableHeader?: {
+        main?: string;
+      };
     };
   }
   interface ThemeOptions {
@@ -12,6 +15,9 @@ export declare module '@mui/material/styles' {
       searchBorder?: {
         light?: string;
         dark?: string;
+      };
+      tableHeader?: {
+        main?: string;
       };
     };
   }
