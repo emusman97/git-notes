@@ -2,15 +2,6 @@ import { createTheme, type ThemeOptions } from '@mui/material/styles';
 import { Colors } from './colors';
 
 export const themeOptions: ThemeOptions = {
-  palette: {
-    mode: 'light',
-    primary: {
-      main: Colors.primary,
-    },
-    secondary: {
-      main: Colors.secondary,
-    },
-  },
   components: {
     MuiButton: {
       styleOverrides: {
@@ -31,4 +22,28 @@ export const themeOptions: ThemeOptions = {
   },
 };
 
-export const theme = createTheme(themeOptions);
+export const theme = createTheme({
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          main: Colors.primary,
+        },
+        secondary: {
+          main: Colors.secondary,
+        },
+      },
+    },
+    dark: {
+      palette: {
+        primary: {
+          main: Colors.primary,
+        },
+        secondary: {
+          main: Colors.secondary,
+        },
+      },
+    },
+  },
+  ...themeOptions,
+});

@@ -3,12 +3,19 @@ import { AppStrings } from '@/constants';
 import { FirebaseService, LocalStorageKeys, LocalStorageService } from '@/core';
 import { RoutePaths } from '@/routes';
 import { useAppDispatch, userActions, useUserState } from '@/state';
-import { Box, IconButton, Stack, Toolbar } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  Stack,
+  Toolbar,
+  useColorScheme,
+  type SwitchProps,
+} from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import { useState, type JSX } from 'react';
 import { useNavigate } from 'react-router';
 import { AvatarMenu } from '../AvatarMenu';
-import { LoadingButton, Search } from './components';
+import { LoadingButton, Search, ThemeSwitch } from './components';
 import { createUser } from '@/models';
 import { useAuthStateChange } from '@/hooks';
 import type { MainAppBarProps } from './types';
@@ -20,6 +27,7 @@ export function MainAppBar({
 }: MainAppBarProps): JSX.Element {
   const dispatch = useAppDispatch();
 
+  const { mode, systemMode, setMode } = useColorScheme();
   const { isAuthenticated } = useUserState();
 
   const navigate = useNavigate();
@@ -29,6 +37,17 @@ export function MainAppBar({
 
   const gotoHome = () => navigate(RoutePaths.Root);
 
+  const isDarkMode =
+    mode === 'dark' || (mode === 'system' && systemMode === 'dark');
+
+  const handleThemeSwitch: SwitchProps['onChange'] = () => {
+    console.log(isDarkMode);
+    if (isDarkMode) {
+      setMode('light');
+    } else {
+      setMode('dark');
+    }
+  };
   const handleLogin = async () => {
     setLoading(true);
 
@@ -58,7 +77,9 @@ export function MainAppBar({
           />
         </IconButton>
 
-        <Stack flexDirection="row" gap={3}>
+        <Stack flexDirection="row" alignItems="center" gap={2}>
+          <ThemeSwitch checked={isDarkMode} onChange={handleThemeSwitch} />
+
           {showSearch && <Search value={query} onValueChange={onQueryChange} />}
 
           {isAuthenticated ? (
