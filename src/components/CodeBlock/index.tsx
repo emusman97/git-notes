@@ -19,6 +19,9 @@ export function CodeBlock({
         <pre
           style={{
             ...style,
+            padding: 10,
+            height: '100%',
+            whiteSpace: 'pre-wrap', // Wrap long lines to prevent horizontal overflow
             ...preElStyles,
           }}
         >
