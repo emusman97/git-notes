@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://api.github.com/gists';
+export const BASE_URL = 'https://api.github.com';
 
 export const NetworkErrorMessage = 'Network Error';
 
@@ -7,6 +7,9 @@ export const BASE_HEADERS = {
   Accept: 'application/json',
 };
 
+const GISTS = '/gists';
+
 export const ApiEndpoints = {
-  Public: '/public',
+  Root: GISTS,
+  Public: `${GISTS}/public`,
 } as const;

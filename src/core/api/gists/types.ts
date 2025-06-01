@@ -11,3 +11,8 @@ export interface FetchPublicGistsResponse {
   data?: Gists;
   hasMorePage: boolean;
 }
+export interface FetchGistsResponse {
+  data?: Gists;
+  hasMorePage: boolean;
+  totalPages?: number;
+}

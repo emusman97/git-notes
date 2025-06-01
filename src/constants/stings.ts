@@ -22,4 +22,8 @@ export const AppStrings = {
   GistName: 'gist_name',
   JohnDoe: 'John Doe',
   View: 'View',
+  ViewGithubProfile: 'View GitHub Profile',
+  AllGists: 'All Gists',
+  $99Plus: '99+',
+  NoGistsAvailable: 'No Gists Available',
 } as const;
