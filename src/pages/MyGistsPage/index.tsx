@@ -77,7 +77,7 @@ export function MyGistsPage(): JSX.Element {
     } else {
       return (
         <GistsGrid
-          gridContainerProps={{ spacing: 1 }}
+          gridContainerProps={{ spacing: 2 }}
           gridItemProps={{ size: 12 }}
           gistCardProps={{ sx: { height: '100%' } }}
           data={gistsData}
