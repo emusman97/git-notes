@@ -29,3 +29,4 @@ export interface Gist {
 export type Gists = Gist[];
 
 export type GistFiles = NonNullable<Gist['files']>;
+export type GistId = NonNullable<Gist['id']>;

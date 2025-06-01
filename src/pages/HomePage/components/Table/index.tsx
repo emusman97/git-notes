@@ -1,7 +1,7 @@
 import { GistForkStarIconGroup, Pagination } from '@/components';
 import { AppStrings } from '@/constants';
 import type { GistUser } from '@/models';
-import { getFilename, getInitials, timeAgo } from '@/utils';
+import { getFilename, getInitials, makeItemKey, timeAgo } from '@/utils';
 import {
   Avatar,
   Chip,
@@ -46,8 +46,13 @@ export function Table({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row) => (
-              <TableRow id={row.id}>
+            {data.map((row, index) => (
+              <TableRow
+                id={
+                  (console.log(makeItemKey(row.id ?? '', index)),
+                  makeItemKey(row.id ?? '', index))
+                }
+              >
                 <TableCell>{renderUserInfo(row.user ?? row.owner)}</TableCell>
                 <TableCell>{getFilename(row.files ?? {})}</TableCell>
                 <TableCell>

@@ -1,4 +1,4 @@
-import type { GistFiles } from '@/models';
+import type { GistFiles, GistId } from '@/models';
 
 const LanguageMap: Record<string, string> = {
   JavaScript: 'javascript',
@@ -27,3 +27,5 @@ export const getFilename = (files: GistFiles) =>
 
 export const getPrismLanguage = (languageValue: string) =>
   LanguageMap[languageValue] ?? '';
+
+export const makeItemKey = (id: GistId, index: number) => `${id}-${index}`;
