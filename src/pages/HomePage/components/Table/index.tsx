@@ -47,12 +47,7 @@ export function Table({
           </TableHead>
           <TableBody>
             {data.map((row, index) => (
-              <TableRow
-                id={
-                  (console.log(makeItemKey(row.id ?? '', index)),
-                  makeItemKey(row.id ?? '', index))
-                }
-              >
+              <TableRow id={makeItemKey(row.id ?? '', index)}>
                 <TableCell>{renderUserInfo(row.user ?? row.owner)}</TableCell>
                 <TableCell>{getFilename(row.files ?? {})}</TableCell>
                 <TableCell>
