@@ -20,9 +20,21 @@ export function MyGistsPage(): JSX.Element {
     () => data?.pages?.length ?? 0,
     [data?.pages?.length]
   );
+  const totalNumberOfGists = useMemo(
+    () =>
+      data?.pages?.reduce(
+        (acc, currData) => acc + (currData.data?.length ?? 0),
+        0
+      ) ?? 0,
+    [data?.pages]
+  );
+  const gistsData = useMemo(
+    () => data?.pages?.[Math.max(page - 1, 0)]?.data ?? [],
+    [data?.pages, page]
+  );
   const noData = useMemo(
-    () => isSuccess && totalPages === 0,
-    [isSuccess, totalPages]
+    () => isSuccess && totalNumberOfGists === 0,
+    [isSuccess, totalNumberOfGists]
   );
 
   const handleNextPage = useCallback(() => {
@@ -48,10 +60,6 @@ export function MyGistsPage(): JSX.Element {
       }) satisfies PaginationProps,
     [handleNextPage, isFetching, page, totalPages]
   );
-  const gistsData = useMemo(
-    () => data?.pages?.[Math.max(page - 1, 0)]?.data ?? [],
-    [data?.pages, page]
-  );
 
   const renderLoadingSkeleton = () => {
     return (
@@ -69,7 +77,7 @@ export function MyGistsPage(): JSX.Element {
   const renderContent = () => {
     if (noData) {
       return (
-        <Typography variant="h1">{AppStrings.NoGistsAvailable}</Typography>
+        <Typography variant="h3">{AppStrings.NoGistsAvailable}</Typography>
       );
     } else if (isLoading || isFetching) {
       return renderLoadingSkeleton();
@@ -95,7 +103,7 @@ export function MyGistsPage(): JSX.Element {
           <PageHeadingContainer
             title={AppStrings.AllGists}
             showBadge
-            badgeValue={totalPages}
+            badgeValue={totalNumberOfGists}
           />
 
           <Stack flex={1}>{renderContent()}</Stack>
