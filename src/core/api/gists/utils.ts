@@ -1,10 +1,11 @@
 import { safeParseNumber } from '@/utils';
+import type { Pagination } from './types';
 
 const linkRegex = /<([^>]+)>;\s*rel="([^"]+)"/;
 
-export const parseLinkHeader = (headerValue: string) => {
+export const parseLinkHeader = (headerValue: string): Pagination => {
   if (!headerValue) {
-    return { totalPages: 1, hasNextPage: false };
+    return { totalPages: 1, hasMorePage: false };
   }
 
   const links = headerValue.split(',').reduce(
@@ -26,6 +27,6 @@ export const parseLinkHeader = (headerValue: string) => {
 
   return {
     totalPages: links.last ? safeParseNumber(links.last, 1) : 1,
-    hasNextPage: !!links.next,
+    hasMorePage: !!links.next,
   };
 };

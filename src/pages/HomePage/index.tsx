@@ -6,7 +6,6 @@ import {
   type PaginationProps,
 } from '@/components';
 import { AppStrings } from '@/constants';
-import { useGetPublicGistsQuery } from '@/core';
 import { useSearchQuery } from '@/hooks';
 import { useUserState } from '@/state';
 import {
@@ -17,8 +16,8 @@ import {
 } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState, type JSX } from 'react';
 import { ListSkeleton, Table } from './components';
-import { NUMBER_OF_ITEMS_PER_PAGE } from './constants';
 import { GistsLayouts, type GistsLayout } from './types';
+import { useGetGistsQuery } from '@/core';
 
 export function HomePage(): JSX.Element {
   const { isAuthenticated } = useUserState();
@@ -29,9 +28,8 @@ export function HomePage(): JSX.Element {
   );
   const [page, setPage] = useState(1);
   const { data, isFetching, isLoading, isSuccess, hasNextPage, fetchNextPage } =
-    useGetPublicGistsQuery({
-      page,
-      itemsPerPage: NUMBER_OF_ITEMS_PER_PAGE,
+    useGetGistsQuery({
+      public: true,
       withAuth: isAuthenticated,
     });
   const totalPages = hasNextPage

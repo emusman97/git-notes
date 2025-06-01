@@ -1,18 +1,17 @@
 import type { Gists } from '@/models';
-
-export interface FetchPublicGistsRequestParams {
+export interface FetchGistsRequestParams {
   withAuth: boolean;
   page: number;
   itemsPerPage: number;
+  public: boolean;
 }
 
 export type GetGistsApiResponse = Gists;
-export interface FetchPublicGistsResponse {
-  data?: Gists;
+
+export interface Pagination {
+  totalPages?: number;
   hasMorePage: boolean;
 }
-export interface FetchGistsResponse {
+export interface FetchGistsResponse extends Pagination {
   data?: Gists;
-  hasMorePage: boolean;
-  totalPages?: number;
 }

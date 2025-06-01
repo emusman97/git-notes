@@ -1,0 +1,2 @@
+export const DEFAULT_ITEMS_PER_PAGE = 2;
+export const DEFAULT_PUBLIC_ITEMS_PER_PAGE = 6;

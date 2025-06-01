@@ -9,13 +9,12 @@ import { useCallback, useMemo, useState, type JSX } from 'react';
 import { UserInfo } from './components';
 import { AppStrings } from '@/constants';
 import { useGetGistsQuery } from '@/core';
-import { NUMBER_OF_ITEMS_PER_PAGE } from './constants';
 
 export function MyGistsPage(): JSX.Element {
   const [page, setPage] = useState(1);
 
   const { data, isLoading, isFetching, isSuccess, hasNextPage, fetchNextPage } =
-    useGetGistsQuery(NUMBER_OF_ITEMS_PER_PAGE);
+    useGetGistsQuery({ public: false });
 
   const totalPages = useMemo(
     () => data?.pages?.length ?? 0,
