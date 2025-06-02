@@ -26,4 +26,6 @@ export const AppStrings = {
   AllGists: 'All Gists',
   $99Plus: '99+',
   NoGistsAvailable: 'No Gists Available',
+  Fork: 'Fork',
+  Star: 'Star',
 } as const;

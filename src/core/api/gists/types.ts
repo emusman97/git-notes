@@ -15,3 +15,5 @@ export interface Pagination {
 export interface FetchGistsResponse extends Pagination {
   data?: Gists;
 }
+
+export type StarOperation = 'star' | 'unstar';

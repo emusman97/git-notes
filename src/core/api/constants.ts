@@ -1,3 +1,5 @@
+import type { GistId } from '@/models';
+
 export const BASE_URL = 'https://api.github.com/gists';
 
 export const NetworkErrorMessage = 'Network Error';
@@ -10,4 +12,5 @@ export const BASE_HEADERS = {
 export const ApiEndpoints = {
   Root: '',
   Public: '/public',
+  Star: (gistId: GistId) => `/${gistId}/star`,
 } as const;

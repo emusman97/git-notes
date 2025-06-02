@@ -1,4 +1,4 @@
-import { HomePage, MyGistsPage } from '@/pages';
+import { HomePage, MyGistsPage, ViewGistPage } from '@/pages';
 import type { JSX } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { RoutePaths } from './routePaths';
@@ -17,6 +17,7 @@ export function MainRoutes(): JSX.Element {
             </ProtectedRoute>
           }
         />
+        <Route path={RoutePaths.Gist} element={<ViewGistPage />} />
       </Routes>
     </BrowserRouter>
   );

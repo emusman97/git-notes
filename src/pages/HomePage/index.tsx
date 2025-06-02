@@ -18,8 +18,13 @@ import { useCallback, useEffect, useMemo, useState, type JSX } from 'react';
 import { ListSkeleton, Table } from './components';
 import { GistsLayouts, type GistsLayout } from './types';
 import { useGetGistsQuery } from '@/core';
+import type { Gist } from '@/models';
+import { useNavigate } from 'react-router';
+import { RoutePaths } from '@/routes';
 
 export function HomePage(): JSX.Element {
+  const navigate = useNavigate();
+
   const { isAuthenticated } = useUserState();
 
   const { query, handleQueryValueChange } = useSearchQuery();
@@ -52,6 +57,9 @@ export function HomePage(): JSX.Element {
       setPage((page) => page + 1);
     }
   }, [fetchNextPage, hasNextPage, page, totalPages]);
+  const handleGistClick = (gist: Gist) => {
+    navigate(RoutePaths.Gist, { state: gist });
+  };
 
   const paginationProps = useMemo(
     () =>
@@ -110,7 +118,11 @@ export function HomePage(): JSX.Element {
         gistsData.length > 0 && (
           <Stack>
             {selectedLayout === GistsLayouts.Table ? (
-              <Table data={gistsData} paginationProps={paginationProps} />
+              <Table
+                data={gistsData}
+                paginationProps={paginationProps}
+                onGistClick={handleGistClick}
+              />
             ) : (
               <GistsGrid
                 data={gistsData}
@@ -118,6 +130,7 @@ export function HomePage(): JSX.Element {
                 gridItemProps={{ size: 4 }}
                 gistCardProps={{ sx: { height: '100%' } }}
                 paginationProps={paginationProps}
+                onGistClick={handleGistClick}
               />
             )}
           </Stack>

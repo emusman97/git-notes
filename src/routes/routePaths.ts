@@ -1,4 +1,5 @@
 export const RoutePaths = {
   Root: '/',
-  MyGists: 'my-gists',
+  MyGists: '/my-gists',
+  Gist: '/gist',
 } as const;

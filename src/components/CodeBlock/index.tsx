@@ -1,7 +1,8 @@
-import type { JSX } from 'react';
+import { useMemo, type JSX } from 'react';
 import type { CodeBlockProps } from './types';
 import { Highlight, themes } from 'prism-react-renderer';
 import { getPrismLanguage } from '@/utils';
+import { useIsDarkMode } from '@/hooks';
 
 export function CodeBlock({
   code,
@@ -9,12 +10,15 @@ export function CodeBlock({
   preElStyles,
   numberOfLinesToRender,
 }: CodeBlockProps): JSX.Element {
+  const isDark = useIsDarkMode();
+
+  const theme = useMemo(
+    () => (isDark ? themes.duotoneDark : themes.duotoneLight),
+    [isDark]
+  );
+
   return (
-    <Highlight
-      theme={themes.github}
-      code={code}
-      language={getPrismLanguage(language)}
-    >
+    <Highlight theme={theme} code={code} language={getPrismLanguage(language)}>
       {({ style, tokens, getLineProps, getTokenProps }) => (
         <pre
           style={{
