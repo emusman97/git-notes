@@ -2,7 +2,7 @@ import { ApiService } from '@/core/api';
 import type { GistId } from '@/models';
 import { useQuery } from '@tanstack/react-query';
 
-const BASE_QUERY_KEY = 'file';
+const BASE_QUERY_KEY = 'star';
 
 export const IsStarredQueryKeys = {
   Base: BASE_QUERY_KEY,
