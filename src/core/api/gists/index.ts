@@ -14,6 +14,7 @@ import type {
   StarOperation,
 } from './types';
 import { parseLinkHeader } from './utils';
+import type { AxiosResponse } from 'axios';
 
 const fetchGists = async ({
   page,
@@ -80,4 +81,35 @@ export const Gists = {
   },
   star: (gistId: GistId) => starUnStarGist(gistId, 'star'),
   unStar: (gistId: GistId) => starUnStarGist(gistId, 'unstar'),
+
+  fetchGistForksCount: async (gistId: GistId) => {
+    let count = 0;
+    let hasMorePages = true;
+    let lastRes: AxiosResponse;
+
+    while (hasMorePages) {
+      const response =
+        await GistsApiHandler.makeApiRequest<GetGistsApiResponse>({
+          endpoint: ApiEndpoints.Forks(gistId),
+          method: HttpMethods.Get,
+          withAuth: true,
+        });
+
+      if (response.failure) {
+        return response;
+      }
+
+      lastRes = response.meta;
+
+      count += response.value?.length ?? 0;
+
+      const { hasMorePage } = parseLinkHeader(response.meta.headers.link);
+
+      console.log({ hasMorePage });
+
+      hasMorePages = hasMorePage;
+    }
+
+    return createApiSuccessResult(count, lastRes!);
+  },
 } as const;

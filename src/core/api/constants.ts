@@ -9,8 +9,11 @@ export const BASE_HEADERS = {
   Accept: 'application/json',
 };
 
+const pathWithId = (id: GistId, resource: string) => `/${id}/${resource}`;
+
 export const ApiEndpoints = {
   Root: '',
   Public: '/public',
-  Star: (gistId: GistId) => `/${gistId}/star`,
+  Star: (gistId: GistId) => pathWithId(gistId, 'star'),
+  Forks: (gistId: GistId) => pathWithId(gistId, 'forks'),
 } as const;

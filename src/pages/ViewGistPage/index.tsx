@@ -2,6 +2,7 @@ import { CodeBlock, GistInfo, MainLayout } from '@/components';
 import {
   IsStarredQueryKeys,
   useFetchFileQuery,
+  useGetForksCountQuery,
   useIsStarredQuery,
   useStarUnstarMutation,
   type StarOperation,
@@ -32,6 +33,8 @@ export function ViewGistPage(): JSX.Element {
   const gistId = gist.id ?? '';
   const file = useMemo(() => getFile(gist.files ?? {}), [gist]);
 
+  const { data: forksCount, isFetching: isFetchingForksCount } =
+    useGetForksCountQuery(gistId);
   const { data: isStarred, isFetching: isCheckingStarred } =
     useIsStarredQuery(gistId);
   const { data, isLoading, isFetching } = useFetchFileQuery(
@@ -41,7 +44,8 @@ export function ViewGistPage(): JSX.Element {
   const { mutate: starUnstar, isPending } = useStarUnstarMutation(gistId);
 
   const isLoadingGistFile = isLoading || isFetching;
-  const isLoadingButtons = isCheckingStarred || isPending;
+  const isLoadingButtons =
+    isFetchingForksCount || isCheckingStarred || isPending;
 
   const handleStarClick = () => {
     const starOp: StarOperation = isStarred ? 'unstar' : 'star';
@@ -60,7 +64,11 @@ export function ViewGistPage(): JSX.Element {
       <Skeleton height="10vh" width="10vw" />
     ) : (
       <>
-        <IconNumberButton iconType="fork" numberToShow={0} />
+        <IconNumberButton
+          checked
+          iconType="fork"
+          numberToShow={forksCount ?? 0}
+        />
         <IconNumberButton
           checked={isStarred}
           iconType="star"
