@@ -6,3 +6,4 @@ export * from './GistForkStarIconGroup';
 export * from './GistCard';
 export * from './CodeBlock';
 export * from './GistsGrid';
+export * from './GistInfo';
