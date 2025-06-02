@@ -29,4 +29,10 @@ export const AppStrings = {
   Fork: 'Fork',
   Star: 'Star',
   CreateGist: 'Create Gist',
+  GistDescription: 'Gist Description',
+  AddFile: 'Add file',
+  DescriptionEmpty: 'File description cannot be empty',
+  InvalidFilename:
+    'Filename cannot start with "gistfile" followed by a number (e.g., gistfile1).',
+  FileIsRequired: 'File Is Required',
 } as const;
