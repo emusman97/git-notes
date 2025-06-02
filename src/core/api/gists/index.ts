@@ -1,4 +1,4 @@
-import type { GistId } from '@/models';
+import type { Gist, GistId } from '@/models';
 import { GistsApiHandler } from '../apiHandler';
 import { ApiEndpoints } from '../constants';
 import { HttpMethods, type ApiResult } from '../types';
@@ -112,4 +112,10 @@ export const Gists = {
 
     return createApiSuccessResult(count, lastRes!);
   },
+  fork: (id: GistId) =>
+    GistsApiHandler.makeApiRequest<Gist>({
+      endpoint: ApiEndpoints.Forks(id),
+      method: HttpMethods.Post,
+      withAuth: true,
+    }),
 } as const;

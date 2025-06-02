@@ -1,7 +1,9 @@
 import { CodeBlock, GistInfo, MainLayout } from '@/components';
 import {
+  GetForksCountQueryKeys,
   IsStarredQueryKeys,
   useFetchFileQuery,
+  useForkMutation,
   useGetForksCountQuery,
   useIsStarredQuery,
   useStarUnstarMutation,
@@ -41,17 +43,29 @@ export function ViewGistPage(): JSX.Element {
     file,
     gist.updated_at ?? ''
   );
-  const { mutate: starUnstar, isPending } = useStarUnstarMutation(gistId);
+  const { mutate: fork, isPending: isForkPending } = useForkMutation(gistId);
+  const { mutate: starUnstar, isPending: isStarUnstatPending } =
+    useStarUnstarMutation(gistId);
 
   const isLoadingGistFile = isLoading || isFetching;
+  const isPending = isForkPending || isStarUnstatPending;
   const isLoadingButtons =
     isFetchingForksCount || isCheckingStarred || isPending;
 
+  const handleForkClick = () => {
+    fork(undefined, {
+      onSuccess() {
+        queryClient.invalidateQueries({
+          queryKey: GetForksCountQueryKeys.withId(gistId),
+        });
+      },
+    });
+  };
   const handleStarClick = () => {
     const starOp: StarOperation = isStarred ? 'unstar' : 'star';
 
     starUnstar(starOp, {
-      onSettled() {
+      onSuccess() {
         queryClient.invalidateQueries({
           queryKey: IsStarredQueryKeys.withId(gistId),
         });
@@ -68,6 +82,7 @@ export function ViewGistPage(): JSX.Element {
           checked
           iconType="fork"
           numberToShow={forksCount ?? 0}
+          onClick={handleForkClick}
         />
         <IconNumberButton
           checked={isStarred}
