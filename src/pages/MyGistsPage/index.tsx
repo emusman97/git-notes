@@ -95,7 +95,7 @@ export function MyGistsPage(): JSX.Element {
   };
 
   return (
-    <MainLayout showSearch>
+    <MainLayout>
       <Stack flexDirection="row" gap={4}>
         <UserInfo />
 
