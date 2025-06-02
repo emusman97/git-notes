@@ -28,10 +28,15 @@ export function AvatarMenu(): JSX.Element {
     FirebaseService.Auth.logout();
   };
 
+  const gotoCreateGist = () => {
+    navigate(RoutePaths.CreateGist);
+  };
   const gotoMyGists = () => {
     navigate(RoutePaths.MyGists);
   };
-  const gotoMyGithubProfile = () => {};
+  const gotoMyGithubProfile = () => {
+    gotoMyGists();
+  };
 
   const renderDivider = () => <Divider sx={{ ml: 1, mr: 1 }} />;
 
@@ -78,12 +83,15 @@ export function AvatarMenu(): JSX.Element {
 
           {renderDivider()}
 
+          <MenuItem onClick={gotoCreateGist}>
+            <Typography>{AppStrings.CreateGist}</Typography>
+          </MenuItem>
           <MenuItem onClick={gotoMyGists}>
             <Typography>{AppStrings.YourGists}</Typography>
           </MenuItem>
-          <MenuItem>
+          {/* <MenuItem>
             <Typography>{AppStrings.StarredGists}</Typography>
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem onClick={gotoMyGithubProfile}>
             <Typography>{AppStrings.YourGithubProfile}</Typography>
           </MenuItem>

@@ -28,4 +28,5 @@ export const AppStrings = {
   NoGistsAvailable: 'No Gists Available',
   Fork: 'Fork',
   Star: 'Star',
+  CreateGist: 'Create Gist',
 } as const;
