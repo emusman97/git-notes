@@ -20,7 +20,7 @@ import { GistsLayouts, type GistsLayout } from './types';
 import { useGetGistsQuery } from '@/core';
 import type { Gist } from '@/models';
 import { useNavigate } from 'react-router';
-import { RoutePaths } from '@/routes';
+import { RoutePaths, type ViewGistsState } from '@/routes';
 
 export function HomePage(): JSX.Element {
   const navigate = useNavigate();
@@ -58,7 +58,8 @@ export function HomePage(): JSX.Element {
     }
   }, [fetchNextPage, hasNextPage, page, totalPages]);
   const handleGistClick = (gist: Gist) => {
-    navigate(RoutePaths.Gist, { state: gist });
+    const state: ViewGistsState = { data: gist };
+    navigate(RoutePaths.Gist, { state });
   };
 
   const paginationProps = useMemo(

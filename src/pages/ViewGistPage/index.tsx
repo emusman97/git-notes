@@ -9,7 +9,8 @@ import {
   useStarUnstarMutation,
   type StarOperation,
 } from '@/core';
-import type { Gist } from '@/models';
+import type { ViewGistsState } from '@/routes';
+import { useSelectIsAuthenticated } from '@/state';
 import { getFile } from '@/utils';
 import {
   Box,
@@ -19,11 +20,10 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 import { useMemo, type JSX } from 'react';
 import { useLocation } from 'react-router';
 import { IconNumberButton } from './components';
-import { useSelectIsAuthenticated } from '@/state';
-import { useQueryClient } from '@tanstack/react-query';
 
 export function ViewGistPage(): JSX.Element {
   const { state } = useLocation();
@@ -31,7 +31,7 @@ export function ViewGistPage(): JSX.Element {
 
   const isAuthenticated = useSelectIsAuthenticated();
 
-  const gist = state as Gist;
+  const { data: gist, myGist } = state as ViewGistsState;
   const gistId = gist.id ?? '';
   const file = useMemo(() => getFile(gist.files ?? {}), [gist]);
 
@@ -79,6 +79,7 @@ export function ViewGistPage(): JSX.Element {
     ) : (
       <>
         <IconNumberButton
+          disabled={myGist}
           checked
           iconType="fork"
           numberToShow={forksCount ?? 0}

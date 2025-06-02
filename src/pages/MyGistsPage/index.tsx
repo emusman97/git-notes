@@ -11,7 +11,7 @@ import { AppStrings } from '@/constants';
 import { useGetGistsQuery } from '@/core';
 import type { Gist } from '@/models';
 import { useNavigate } from 'react-router';
-import { RoutePaths } from '@/routes';
+import { RoutePaths, type ViewGistsState } from '@/routes';
 
 export function MyGistsPage(): JSX.Element {
   const navigate = useNavigate();
@@ -55,7 +55,8 @@ export function MyGistsPage(): JSX.Element {
     setPage((page) => Math.max(page - 0, 1));
   };
   const handleGistClick = (gist: Gist) => {
-    navigate(RoutePaths.Gist, { state: gist });
+    const state: ViewGistsState = { data: gist, myGist: true };
+    navigate(RoutePaths.Gist, { state });
   };
 
   const paginationProps = useMemo(
