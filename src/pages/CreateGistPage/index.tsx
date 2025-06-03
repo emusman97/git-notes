@@ -46,6 +46,13 @@ export function CreateGistPage(): JSX.Element {
     const file = files[0];
 
     if (file) {
+      const isDuplicate = fields.some((field) => field.file.name === file.name);
+
+      if (isDuplicate) {
+        showAlert(AppStrings.DuplicateFileError, 'error');
+        return;
+      }
+
       append({ fileId: `${file.name}-${uuidv4()}`, content: null, file });
       event.target.value = '';
     }
