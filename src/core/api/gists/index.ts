@@ -11,6 +11,7 @@ import type {
   CreateGistRequest,
   FetchGistsRequestParams,
   FetchGistsResponse,
+  GetGenericDataResponse,
   GetGistsApiResponse,
   StarOperation,
 } from './types';
@@ -48,6 +49,35 @@ const fetchGists = async ({
   );
 };
 
+const fetchCount = async (endpoint: string) => {
+  let count = 0;
+  let hasMorePages = true;
+  let lastRes: AxiosResponse;
+
+  while (hasMorePages) {
+    const response =
+      await GistsApiHandler.makeApiRequest<GetGenericDataResponse>({
+        endpoint: endpoint,
+        method: HttpMethods.Get,
+        withAuth: true,
+      });
+
+    if (response.failure) {
+      return response;
+    }
+
+    lastRes = response.meta;
+
+    count += response.value?.length ?? 0;
+
+    const { hasMorePage } = parseLinkHeader(response.meta.headers.link);
+
+    hasMorePages = hasMorePage;
+  }
+
+  return createApiSuccessResult(count, lastRes!);
+};
+
 const starUnStarGist = (gistId: GistId, starOp: StarOperation) =>
   GistsApiHandler.makeApiRequest({
     endpoint: ApiEndpoints.Star(gistId),
@@ -83,34 +113,8 @@ export const Gists = {
   star: (gistId: GistId) => starUnStarGist(gistId, 'star'),
   unStar: (gistId: GistId) => starUnStarGist(gistId, 'unstar'),
 
-  fetchGistForksCount: async (gistId: GistId) => {
-    let count = 0;
-    let hasMorePages = true;
-    let lastRes: AxiosResponse;
-
-    while (hasMorePages) {
-      const response =
-        await GistsApiHandler.makeApiRequest<GetGistsApiResponse>({
-          endpoint: ApiEndpoints.Forks(gistId),
-          method: HttpMethods.Get,
-          withAuth: true,
-        });
-
-      if (response.failure) {
-        return response;
-      }
-
-      lastRes = response.meta;
-
-      count += response.value?.length ?? 0;
-
-      const { hasMorePage } = parseLinkHeader(response.meta.headers.link);
-
-      hasMorePages = hasMorePage;
-    }
-
-    return createApiSuccessResult(count, lastRes!);
-  },
+  fetchGistForksCount: async (gistId: GistId) =>
+    fetchCount(ApiEndpoints.Forks(gistId)),
   fork: (id: GistId) =>
     GistsApiHandler.makeApiRequest<Gist>({
       endpoint: ApiEndpoints.Forks(id),

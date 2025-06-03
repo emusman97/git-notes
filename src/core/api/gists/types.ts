@@ -8,6 +8,7 @@ export interface FetchGistsRequestParams {
 
 export type GetGistsApiResponse = Gists;
 
+export type GetGenericDataResponse = unknown[];
 export interface Pagination {
   totalPages?: number;
   hasMorePage: boolean;
