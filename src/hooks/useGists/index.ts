@@ -22,12 +22,12 @@ export function useGists({ ...restParams }: UseGetGists) {
   const handleNextPage = useCallback(() => {
     const nextPage = page + 1;
 
-    if (nextPage === totalPages && hasNextPage) {
+    if (nextPage > (data?.pages?.length ?? 0) && hasNextPage) {
       fetchNextPage();
-    } else {
-      setPage((page) => page + 1);
     }
-  }, [fetchNextPage, hasNextPage, page, totalPages]);
+
+    setPage(nextPage);
+  }, [data?.pages?.length, fetchNextPage, hasNextPage, page]);
 
   const paginationProps = useMemo(
     () =>
@@ -56,12 +56,6 @@ export function useGists({ ...restParams }: UseGetGists) {
     () => isSuccess && totalNumberOfGists === 0,
     [isSuccess, totalNumberOfGists]
   );
-
-  useEffect(() => {
-    if (isSuccess && totalPages !== 2) {
-      setPage((page) => page + 1);
-    }
-  }, [isSuccess, totalPages]);
 
   useEffect(() => {
     if (isAuthenticated) {

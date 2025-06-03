@@ -11,8 +11,14 @@ import { UserInfo } from './components';
 export function MyGistsPage(): JSX.Element {
   const navigate = useNavigate();
 
-  const { isLoading, noData, gistsData, totalNumberOfGists, paginationProps } =
-    useGists({});
+  const {
+    isLoading,
+    isFetching,
+    noData,
+    gistsData,
+    totalNumberOfGists,
+    paginationProps,
+  } = useGists({});
 
   const handleGistClick = (gist: Gist) => {
     const state: ViewGistsState = { data: gist, myGist: true };
@@ -37,7 +43,7 @@ export function MyGistsPage(): JSX.Element {
       return (
         <Typography variant="h3">{AppStrings.NoGistsAvailable}</Typography>
       );
-    } else if (isLoading) {
+    } else if (isLoading || isFetching) {
       return renderLoadingSkeleton();
     } else {
       return (
