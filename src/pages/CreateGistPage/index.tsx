@@ -57,7 +57,6 @@ export function CreateGistPage(): JSX.Element {
       event.target.value = '';
     }
   };
-  };
   const handleDelete = (index: number) => () => remove(index);
   const handleContentLoad = (index: number) => (content: string) => {
     const updatedInfo = { ...fields[index], content };
