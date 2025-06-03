@@ -8,6 +8,7 @@ import {
   DEFAULT_PUBLIC_ITEMS_PER_PAGE,
 } from './constants';
 import type {
+  CreateGistRequest,
   FetchGistsRequestParams,
   FetchGistsResponse,
   GetGistsApiResponse,
@@ -117,5 +118,13 @@ export const Gists = {
       endpoint: ApiEndpoints.Forks(id),
       method: HttpMethods.Post,
       withAuth: true,
+    }),
+
+  create: (gist: CreateGistRequest) =>
+    GistsApiHandler.makeApiRequest<Gist, CreateGistRequest>({
+      endpoint: ApiEndpoints.Root,
+      method: HttpMethods.Post,
+      withAuth: true,
+      data: gist,
     }),
 } as const;

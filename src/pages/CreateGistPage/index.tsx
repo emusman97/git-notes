@@ -1,5 +1,6 @@
 import { MainLayout, PageHeadingContainer } from '@/components';
 import { AppStrings } from '@/constants';
+import { useCreateGistMutation, type FilesPayload } from '@/core';
 import {
   Button,
   FormControl,
@@ -16,8 +17,8 @@ import {
   type SubmitHandler,
 } from 'react-hook-form';
 import { File, VisuallyHiddenInput } from './components';
-import type { FormFields } from './types';
 import { FILENAME_REGEX } from './constants';
+import type { FormFields } from './types';
 
 export function CreateGistPage(): JSX.Element {
   const {
@@ -25,7 +26,11 @@ export function CreateGistPage(): JSX.Element {
     handleSubmit,
     register,
     formState: { errors },
+    setError,
+    reset,
   } = useForm<FormFields>();
+
+  const { mutate: createGist, isPending } = useCreateGistMutation();
 
   const { fields, append, update, remove } = useFieldArray({
     control,
@@ -45,7 +50,28 @@ export function CreateGistPage(): JSX.Element {
   };
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data);
+    if (data.description.trim() === '') {
+      setError('description', {
+        type: 'required',
+        message: AppStrings.DescriptionEmpty,
+      });
+      return;
+    }
+
+    const files = data.files.reduce((filesObj, curr) => {
+      const filename = curr.file.name;
+      filesObj[filename] = { content: curr.content ?? '' };
+
+      return filesObj;
+    }, {} as FilesPayload);
+    createGist(
+      { description: data.description, files },
+      {
+        onSuccess() {
+          reset({ files: [] });
+        },
+      }
+    );
   };
 
   return (
@@ -101,6 +127,7 @@ export function CreateGistPage(): JSX.Element {
             justifyContent="space-between"
           >
             <Button
+              disabled={isPending}
               component="label"
               variant="contained"
               color="primary"
@@ -109,7 +136,7 @@ export function CreateGistPage(): JSX.Element {
               {AppStrings.AddFile}
               <VisuallyHiddenInput type="file" onChange={handleFileChange} />
             </Button>
-            <Button type="submit" variant="contained">
+            <Button loading={isPending} type="submit" variant="contained">
               {AppStrings.CreateGist}
             </Button>
           </Stack>

@@ -17,3 +17,13 @@ export interface FetchGistsResponse extends Pagination {
 }
 
 export type StarOperation = 'star' | 'unstar';
+
+export interface FileToCreate {
+  content: string;
+}
+
+export type FilesPayload = Record<string, FileToCreate>;
+export interface CreateGistRequest {
+  description: string;
+  files: FilesPayload;
+}

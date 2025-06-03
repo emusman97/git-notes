@@ -4,3 +4,4 @@ export * from './useIsStarredQuery';
 export * from './useStarUnstarMutation';
 export * from './useGetForksCountQuery';
 export * from './useForkMutation';
+export * from './useCreateGistMutation';
