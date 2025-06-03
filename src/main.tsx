@@ -8,6 +8,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { queryClient } from './core';
+import { AlertContextProvider } from './context';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -19,8 +20,10 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <MainRoutes />
+          <AlertContextProvider>
+            <CssBaseline />
+            <MainRoutes />
+          </AlertContextProvider>
         </ThemeProvider>
       </Provider>
     </QueryClientProvider>

@@ -1,5 +1,6 @@
 import { AxiosError, type AxiosResponse } from 'axios';
 import type { SuccessResult, FailureResult } from '@/types';
+import { API_FAILURE_RESULT_SYMBOL, API_SUCCESS_RESULT_SYMBOL } from './utils';
 
 export const ApiErrorMessages = {
   General: 'Something went wrong',
@@ -35,12 +36,13 @@ export type ApiRequestConfig<D> = D extends undefined
 export type ApiSuccessResult<D> = SuccessResult<D, number> & {
   code: number;
   meta: AxiosResponse<D>;
+  [API_SUCCESS_RESULT_SYMBOL]: true;
 };
 
 export type ApiFailureResult = FailureResult<
   number,
   undefined | AxiosError | Error
->;
+> & { [API_FAILURE_RESULT_SYMBOL]: true };
 
 export type ApiResult<R> = ApiSuccessResult<R> | ApiFailureResult;
 
@@ -60,3 +62,14 @@ export interface CreateApiReqHandlerParams {
   addTokenInterceptor: boolean;
   getAuthHeaderValue: () => string;
 }
+
+export const isApiSuccessResult = <D>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  obj: any
+): obj is ApiSuccessResult<D> =>
+  obj && obj?.[API_SUCCESS_RESULT_SYMBOL] === true;
+
+export const isApiFailureResult = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  obj: any
+): obj is ApiFailureResult => obj && obj?.[API_FAILURE_RESULT_SYMBOL] === true;

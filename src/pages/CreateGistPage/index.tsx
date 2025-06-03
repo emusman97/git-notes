@@ -19,8 +19,11 @@ import {
 import { File, VisuallyHiddenInput } from './components';
 import { FILENAME_REGEX } from './constants';
 import type { FormFields } from './types';
+import { useAlertContext } from '@/context';
 
 export function CreateGistPage(): JSX.Element {
+  const { showAlert } = useAlertContext();
+
   const {
     control,
     handleSubmit,
@@ -58,6 +61,11 @@ export function CreateGistPage(): JSX.Element {
       return;
     }
 
+    if (data.files.length === 0) {
+      showAlert(AppStrings.FileIsRequired, 'error');
+      return;
+    }
+
     const files = data.files.reduce((filesObj, curr) => {
       const filename = curr.file.name;
       filesObj[filename] = { content: curr.content ?? '' };
@@ -69,6 +77,10 @@ export function CreateGistPage(): JSX.Element {
       {
         onSuccess() {
           reset({ files: [] });
+          showAlert(AppStrings.GistCreated, 'success');
+        },
+        onError() {
+          showAlert(AppStrings.CreateGistError, 'error');
         },
       }
     );

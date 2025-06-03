@@ -34,5 +34,7 @@ export const AppStrings = {
   DescriptionEmpty: 'File description cannot be empty',
   InvalidFilename:
     'Filename cannot start with "gistfile" followed by a number (e.g., gistfile1).',
-  FileIsRequired: 'File Is Required',
+  FileIsRequired: 'At least one file is required',
+  GistCreated: 'Gist created',
+  CreateGistError: 'Something went wrong while creating gist',
 } as const;
