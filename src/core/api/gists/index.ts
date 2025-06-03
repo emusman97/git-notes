@@ -106,8 +106,6 @@ export const Gists = {
 
       const { hasMorePage } = parseLinkHeader(response.meta.headers.link);
 
-      console.log({ hasMorePage });
-
       hasMorePages = hasMorePage;
     }
 
