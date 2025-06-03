@@ -1,26 +1,31 @@
+import '@/index.css';
+import { MainRoutes } from '@/routes';
+import { store } from '@/state';
+import { theme } from '@/styles';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router';
 import { Provider } from 'react-redux';
-import '@/index.css';
-import { store } from '@/state';
-import { MainRoutes } from '@/routes';
-import { theme } from '@/styles';
+import { queryClient } from './core';
+import { AlertContextProvider } from './context';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { ThemeProvider } from '@mui/material';
 
 createRoot(document.getElementById('root')!).render(
-  <BrowserRouter>
-    <StrictMode>
+  <StrictMode>
+    <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <MainRoutes />
+          <AlertContextProvider>
+            <CssBaseline />
+            <MainRoutes />
+          </AlertContextProvider>
         </ThemeProvider>
       </Provider>
-    </StrictMode>
-  </BrowserRouter>
+    </QueryClientProvider>
+  </StrictMode>
 );
