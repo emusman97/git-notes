@@ -7,18 +7,14 @@ import { Skeleton, Stack, Typography } from '@mui/material';
 import { type JSX } from 'react';
 import { useNavigate } from 'react-router';
 import { UserInfo } from './components';
+import { useGetGistsCountQuery } from '@/core';
 
 export function MyGistsPage(): JSX.Element {
   const navigate = useNavigate();
 
-  const {
-    isLoading,
-    isFetching,
-    noData,
-    gistsData,
-    totalNumberOfGists,
-    paginationProps,
-  } = useGists({});
+  const { data: totalNumberOfGists = 0 } = useGetGistsCountQuery();
+  const { isLoading, isFetching, noData, gistsData, paginationProps } =
+    useGists({});
 
   const handleGistClick = (gist: Gist) => {
     const state: ViewGistsState = { data: gist, myGist: true };

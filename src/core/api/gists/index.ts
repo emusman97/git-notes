@@ -100,6 +100,7 @@ export const Gists = {
       public: true,
       itemsPerPage: DEFAULT_PUBLIC_ITEMS_PER_PAGE,
     }),
+  fetchAllGistsCount: () => fetchCount(ApiEndpoints.Root),
 
   checkIsStarred: async (gistId: GistId) => {
     const response = await GistsApiHandler.makeApiRequest({
