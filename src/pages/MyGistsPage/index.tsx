@@ -5,7 +5,7 @@ import {
   type PaginationProps,
 } from '@/components';
 import { Skeleton, Stack, Typography } from '@mui/material';
-import { useCallback, useMemo, useState, type JSX } from 'react';
+import { useCallback, useEffect, useMemo, useState, type JSX } from 'react';
 import { UserInfo } from './components';
 import { AppStrings } from '@/constants';
 import { useGetGistsQuery } from '@/core';
@@ -22,8 +22,9 @@ export function MyGistsPage(): JSX.Element {
     useGetGistsQuery({ public: false });
 
   const totalPages = useMemo(
-    () => data?.pages?.length ?? 0,
-    [data?.pages?.length]
+    () =>
+      hasNextPage ? (data?.pages.length ?? 0) + 1 : (data?.pages?.length ?? 0),
+    [data?.pages.length, hasNextPage]
   );
   const totalNumberOfGists = useMemo(
     () =>
@@ -52,7 +53,7 @@ export function MyGistsPage(): JSX.Element {
     }
   }, [fetchNextPage, hasNextPage, page, totalPages]);
   const handlePreviousPage = () => {
-    setPage((page) => Math.max(page - 0, 1));
+    setPage((page) => Math.max(page - 1, 0));
   };
   const handleGistClick = (gist: Gist) => {
     const state: ViewGistsState = { data: gist, myGist: true };
@@ -104,6 +105,12 @@ export function MyGistsPage(): JSX.Element {
       );
     }
   };
+
+  useEffect(() => {
+    if (isSuccess && totalPages !== 2) {
+      setPage((page) => page + 1);
+    }
+  }, [isSuccess, totalPages]);
 
   return (
     <MainLayout>
