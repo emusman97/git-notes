@@ -1,76 +1,23 @@
-import {
-  GistsGrid,
-  MainLayout,
-  PageHeadingContainer,
-  type PaginationProps,
-} from '@/components';
-import { Skeleton, Stack, Typography } from '@mui/material';
-import { useCallback, useEffect, useMemo, useState, type JSX } from 'react';
-import { UserInfo } from './components';
+import { GistsGrid, MainLayout, PageHeadingContainer } from '@/components';
 import { AppStrings } from '@/constants';
-import { useGetGistsQuery } from '@/core';
+import { useGists } from '@/hooks';
 import type { Gist } from '@/models';
-import { useNavigate } from 'react-router';
 import { RoutePaths, type ViewGistsState } from '@/routes';
+import { Skeleton, Stack, Typography } from '@mui/material';
+import { type JSX } from 'react';
+import { useNavigate } from 'react-router';
+import { UserInfo } from './components';
 
 export function MyGistsPage(): JSX.Element {
   const navigate = useNavigate();
 
-  const [page, setPage] = useState(1);
+  const { isLoading, noData, gistsData, totalNumberOfGists, paginationProps } =
+    useGists({});
 
-  const { data, isLoading, isFetching, isSuccess, hasNextPage, fetchNextPage } =
-    useGetGistsQuery({ public: false });
-
-  const totalPages = useMemo(
-    () =>
-      hasNextPage ? (data?.pages.length ?? 0) + 1 : (data?.pages?.length ?? 0),
-    [data?.pages.length, hasNextPage]
-  );
-  const totalNumberOfGists = useMemo(
-    () =>
-      data?.pages?.reduce(
-        (acc, currData) => acc + (currData.data?.length ?? 0),
-        0
-      ) ?? 0,
-    [data?.pages]
-  );
-  const gistsData = useMemo(
-    () => data?.pages?.[Math.max(page - 1, 0)]?.data ?? [],
-    [data?.pages, page]
-  );
-  const noData = useMemo(
-    () => isSuccess && totalNumberOfGists === 0,
-    [isSuccess, totalNumberOfGists]
-  );
-
-  const handleNextPage = useCallback(() => {
-    const nextPage = page + 1;
-
-    if (nextPage === totalPages && hasNextPage) {
-      fetchNextPage();
-    } else {
-      setPage((page) => page + 1);
-    }
-  }, [fetchNextPage, hasNextPage, page, totalPages]);
-  const handlePreviousPage = () => {
-    setPage((page) => Math.max(page - 1, 0));
-  };
   const handleGistClick = (gist: Gist) => {
     const state: ViewGistsState = { data: gist, myGist: true };
     navigate(RoutePaths.Gist, { state });
   };
-
-  const paginationProps = useMemo(
-    () =>
-      ({
-        page,
-        totalPages: totalPages,
-        nextButtonLoading: page !== 1 && isFetching,
-        onPreviousButtonClick: handlePreviousPage,
-        onNextButtonClick: handleNextPage,
-      }) satisfies PaginationProps,
-    [handleNextPage, isFetching, page, totalPages]
-  );
 
   const renderLoadingSkeleton = () => {
     return (
@@ -90,7 +37,7 @@ export function MyGistsPage(): JSX.Element {
       return (
         <Typography variant="h3">{AppStrings.NoGistsAvailable}</Typography>
       );
-    } else if (isLoading || isFetching) {
+    } else if (isLoading) {
       return renderLoadingSkeleton();
     } else {
       return (
@@ -105,12 +52,6 @@ export function MyGistsPage(): JSX.Element {
       );
     }
   };
-
-  useEffect(() => {
-    if (isSuccess && totalPages !== 2) {
-      setPage((page) => page + 1);
-    }
-  }, [isSuccess, totalPages]);
 
   return (
     <MainLayout>

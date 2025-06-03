@@ -31,3 +31,5 @@ export const useGetGistsQuery = (params: UseGetGistsQuery) =>
     initialPageParam: 1,
     staleTime: 0,
   });
+
+export type { UseGetGistsQuery } from './types';
