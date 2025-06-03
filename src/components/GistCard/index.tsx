@@ -1,32 +1,44 @@
-import type { GistUser } from '@/models';
-import { getInitials } from '@/utils';
-import { Avatar, Paper, Stack } from '@mui/material';
+import { useBooleanState } from '@/hooks';
+import { Paper, Stack, styled } from '@mui/material';
 import type { JSX } from 'react';
+import { GistForkStarIconGroup } from '../GistForkStarIconGroup';
 import { GistInfo } from '../GistInfo';
-import type { GistCardProps } from './types';
 import { CodeBlockSnippet } from './CodeBlockSnippet';
+import type { GistCardProps } from './types';
 
-export function GistCard({
-  data,
-  sx,
-  ...restProps
-}: GistCardProps): JSX.Element {
-  const user = (data.user ?? data.owner ?? {}) satisfies GistUser;
+const ClickableStack = styled(Stack)(() => ({
+  cursor: 'pointer',
+}));
+
+export function GistCard({ data, ...restProps }: GistCardProps): JSX.Element {
+  const [hovered, hover, unHover] = useBooleanState();
 
   return (
-    <Paper
+    <ClickableStack
+      component={Paper}
       {...restProps}
-      sx={{ display: 'flex', flexDirection: 'column', ...sx }}
+      onMouseEnter={hover}
+      onMouseLeave={unHover}
     >
       <CodeBlockSnippet
+        hovered={hovered}
         files={data.files ?? {}}
         gistUpdatedAt={data.updated_at ?? ''}
       />
-      <Stack flex={1} flexDirection="row" alignItems="center" p={1} gap={1}>
-        <Avatar src={user.avatar_url}>{getInitials(user.login ?? '')}</Avatar>
 
-        <GistInfo data={data} />
+      <Stack
+        flex={1}
+        flexDirection="row"
+        alignItems="center"
+        gap={2}
+        justifyContent="space-between"
+      >
+        <Stack flex={1} flexDirection="row" alignItems="center" p={1}>
+          <GistInfo data={data} />
+        </Stack>
+
+        {hovered && <GistForkStarIconGroup />}
       </Stack>
-    </Paper>
+    </ClickableStack>
   );
 }

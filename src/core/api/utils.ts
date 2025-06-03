@@ -9,6 +9,9 @@ import {
   type GeneralApiResponseData,
 } from './types';
 
+export const API_SUCCESS_RESULT_SYMBOL = Symbol('api_success');
+export const API_FAILURE_RESULT_SYMBOL = Symbol('api_failure');
+
 export function createRequestConfig<D>(requestConfig: ApiRequestConfig<D>) {
   const axiosReqConfig: AxiosRequestConfig = {};
 
@@ -36,6 +39,7 @@ export const createApiSuccessResult = <D>(
   value: data,
   cause: null,
   meta: response,
+  [API_SUCCESS_RESULT_SYMBOL]: true,
 });
 
 export const createApiFailureResult = (
@@ -47,6 +51,7 @@ export const createApiFailureResult = (
   message: result?.message ?? ApiErrorMessages.General,
   code: result?.code ?? -1,
   cause: result?.cause,
+  [API_FAILURE_RESULT_SYMBOL]: true,
 });
 
 export function handlerError(error: unknown): ApiFailureResult {

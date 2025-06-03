@@ -1,13 +1,13 @@
 import { AppStrings } from '@/constants';
 import { useFetchFileQuery } from '@/core';
-import { useBooleanState } from '@/hooks';
 import { theme } from '@/styles';
-import { Stack, styled, Typography } from '@mui/material';
+import { Box, Stack, styled, Typography } from '@mui/material';
 import { useMemo, type JSX } from 'react';
-import type { CodeBlockSnippetProps } from './types';
 import { CodeBlock } from '../CodeBlock';
+import type { CodeBlockSnippetProps } from './types';
 
 const ContainerStack = styled(Stack)(({ theme }) => ({
+  width: '100%',
   position: 'relative',
   color: theme.palette.secondary.main,
   '&:hover': {
@@ -20,26 +20,25 @@ const ContainerStack = styled(Stack)(({ theme }) => ({
 export function CodeBlockSnippet({
   files,
   gistUpdatedAt,
+  hovered,
+  ...restProps
 }: CodeBlockSnippetProps): JSX.Element {
   const file = useMemo(() => Object.values(files)?.[0], [files]);
 
   const { data } = useFetchFileQuery(file, gistUpdatedAt);
-  const [hovered, hover, unHover] = useBooleanState();
 
   return (
-    <ContainerStack onMouseEnter={hover} onMouseLeave={unHover}>
-      <Stack sx={{ height: 200, overflow: 'auto' }}>
+    <ContainerStack {...restProps}>
+      <Box sx={{ height: 200, width: '100%', overflow: 'auto' }}>
         <CodeBlock
           code={data ?? ''}
           language={file.language ?? ''}
           preElStyles={{
-            padding: 10,
             overflow: 'hidden',
-            height: '100%',
           }}
           numberOfLinesToRender={14}
         />
-      </Stack>
+      </Box>
       {hovered && (
         <Stack
           sx={{

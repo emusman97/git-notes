@@ -11,15 +11,6 @@ export const themeOptions: ThemeOptions = {
       },
     },
   },
-  custom: {
-    searchBorder: {
-      light: Colors.searchBorder,
-      dark: Colors.white,
-    },
-    tableHeader: {
-      main: Colors.tableHeader,
-    },
-  },
 };
 
 export const theme = createTheme({
@@ -32,6 +23,14 @@ export const theme = createTheme({
         secondary: {
           main: Colors.secondary,
         },
+        searchBorder: {
+          main: Colors.searchBorder,
+          light: Colors.searchBorder,
+          dark: Colors.white,
+        },
+        tableHeader: {
+          main: Colors.tableHeader,
+        },
       },
     },
     dark: {
@@ -41,6 +40,14 @@ export const theme = createTheme({
         },
         secondary: {
           main: Colors.secondary,
+        },
+        searchBorder: {
+          main: Colors.searchBorder,
+          light: Colors.searchBorder,
+          dark: Colors.white,
+        },
+        tableHeader: {
+          main: Colors.tableHeaderDark,
         },
       },
     },

@@ -8,7 +8,7 @@ import type { SearchProps } from './types';
 const SearchContainer = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
-  border: `1px solid ${theme.custom.searchBorder.light}`,
+  border: `1px solid ${theme.palette.searchBorder.light}`,
   marginLeft: 0,
   width: '100%',
   [theme.breakpoints.up('sm')]: {
@@ -16,10 +16,10 @@ const SearchContainer = styled('div')(({ theme }) => ({
     width: 'auto',
   },
   '&:has(input:focus)': {
-    borderColor: theme.custom.searchBorder.dark,
+    borderColor: theme.palette.searchBorder.dark,
   },
   '&:has(input:focus) .MuiSvgIcon-root': {
-    fill: theme.custom.searchBorder.dark,
+    fill: theme.palette.searchBorder.dark,
   },
 }));
 
@@ -32,7 +32,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   '& .MuiSvgIcon-root': {
-    fill: theme.custom.searchBorder.light,
+    fill: theme.palette.searchBorder.light,
   },
 }));
 

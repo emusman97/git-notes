@@ -1,7 +1,7 @@
 import { GistForkStarIconGroup, Pagination } from '@/components';
 import { AppStrings } from '@/constants';
-import type { GistUser } from '@/models';
-import { getFilename, getInitials, timeAgo } from '@/utils';
+import type { Gist, GistUser } from '@/models';
+import { getFilename, getInitials, makeItemKey, timeAgo } from '@/utils';
 import {
   Avatar,
   Chip,
@@ -23,8 +23,13 @@ import type { TableProps } from './types';
 export function Table({
   data,
   paginationProps,
+  onGistClick,
   ...restProps
 }: TableProps): JSX.Element {
+  const handleGistClick = (gist: Gist) => () => {
+    onGistClick?.(gist);
+  };
+
   const renderUserInfo = (user?: GistUser) => (
     <Stack flexDirection="row" alignItems="center" gap={1}>
       <Avatar src={user?.avatar_url}>{getInitials(user?.login ?? '')}</Avatar>
@@ -46,8 +51,13 @@ export function Table({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row) => (
-              <TableRow id={row.id}>
+            {data.map((row, index) => (
+              <TableRow
+                id={makeItemKey(row.id ?? '', index)}
+                hover
+                sx={{ cursor: 'pointer' }}
+                onClick={handleGistClick(row)}
+              >
                 <TableCell>{renderUserInfo(row.user ?? row.owner)}</TableCell>
                 <TableCell>{getFilename(row.files ?? {})}</TableCell>
                 <TableCell>

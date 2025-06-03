@@ -1,11 +1,12 @@
 import type { Gist } from '@/models';
-import type { PaperProps } from '@mui/material';
+import type { StackProps } from '@mui/material';
 
-export interface GistCardProps extends PaperProps {
+export interface GistCardProps extends StackProps {
   data: Gist;
 }
 
-export interface CodeBlockSnippetProps {
+export interface CodeBlockSnippetProps extends StackProps {
+  hovered: boolean;
   files: NonNullable<Gist['files']>;
   gistUpdatedAt: string;
 }

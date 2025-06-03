@@ -1,11 +1,11 @@
 import {
+  GistsGrid,
   Icons,
   MainLayout,
   PageHeadingContainer,
   type PaginationProps,
 } from '@/components';
 import { AppStrings } from '@/constants';
-import { useGetPublicGistsQuery } from '@/core';
 import { useSearchQuery } from '@/hooks';
 import { useUserState } from '@/state';
 import {
@@ -15,11 +15,16 @@ import {
   type ToggleButtonGroupProps,
 } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState, type JSX } from 'react';
-import { GistsGrid, ListSkeleton, Table } from './components';
-import { NUMBER_OF_ITEMS_PER_PAGE } from './constants';
+import { ListSkeleton, Table } from './components';
 import { GistsLayouts, type GistsLayout } from './types';
+import { useGetGistsQuery } from '@/core';
+import type { Gist } from '@/models';
+import { useNavigate } from 'react-router';
+import { RoutePaths, type ViewGistsState } from '@/routes';
 
 export function HomePage(): JSX.Element {
+  const navigate = useNavigate();
+
   const { isAuthenticated } = useUserState();
 
   const { query, handleQueryValueChange } = useSearchQuery();
@@ -28,9 +33,8 @@ export function HomePage(): JSX.Element {
   );
   const [page, setPage] = useState(1);
   const { data, isFetching, isLoading, isSuccess, hasNextPage, fetchNextPage } =
-    useGetPublicGistsQuery({
-      page,
-      itemsPerPage: NUMBER_OF_ITEMS_PER_PAGE,
+    useGetGistsQuery({
+      public: true,
       withAuth: isAuthenticated,
     });
   const totalPages = hasNextPage
@@ -53,6 +57,10 @@ export function HomePage(): JSX.Element {
       setPage((page) => page + 1);
     }
   }, [fetchNextPage, hasNextPage, page, totalPages]);
+  const handleGistClick = (gist: Gist) => {
+    const state: ViewGistsState = { data: gist };
+    navigate(RoutePaths.Gist, { state });
+  };
 
   const paginationProps = useMemo(
     () =>
@@ -111,9 +119,20 @@ export function HomePage(): JSX.Element {
         gistsData.length > 0 && (
           <Stack>
             {selectedLayout === GistsLayouts.Table ? (
-              <Table data={gistsData} paginationProps={paginationProps} />
+              <Table
+                data={gistsData}
+                paginationProps={paginationProps}
+                onGistClick={handleGistClick}
+              />
             ) : (
-              <GistsGrid data={gistsData} paginationProps={paginationProps} />
+              <GistsGrid
+                data={gistsData}
+                gridContainerProps={{ spacing: { xs: 12, sm: 4 } }}
+                gridItemProps={{ size: 4 }}
+                gistCardProps={{ sx: { height: '100%' } }}
+                paginationProps={paginationProps}
+                onGistClick={handleGistClick}
+              />
             )}
           </Stack>
         )
