@@ -1,8 +1,15 @@
 import { Images } from '@/assets';
 import { AppStrings } from '@/constants';
 import { FirebaseService, LocalStorageKeys, LocalStorageService } from '@/core';
+import { useAuthStateChange } from '@/hooks';
+import { createUser } from '@/models';
 import { RoutePaths } from '@/routes';
-import { useAppDispatch, userActions, useUserState } from '@/state';
+import {
+  useAppDispatch,
+  userActions,
+  useSelectLoading,
+  useUserState,
+} from '@/state';
 import {
   Box,
   IconButton,
@@ -12,12 +19,10 @@ import {
   type SwitchProps,
 } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
-import { useState, type JSX } from 'react';
+import { type JSX } from 'react';
 import { useNavigate } from 'react-router';
 import { AvatarMenu } from '../AvatarMenu';
 import { LoadingButton, Search, ThemeSwitch } from './components';
-import { createUser } from '@/models';
-import { useAuthStateChange } from '@/hooks';
 import type { MainAppBarProps } from './types';
 
 export function MainAppBar({
@@ -27,13 +32,12 @@ export function MainAppBar({
 }: MainAppBarProps): JSX.Element {
   const dispatch = useAppDispatch();
 
+  const loading = useSelectLoading();
   const { mode, systemMode, setMode } = useColorScheme();
   const { isAuthenticated } = useUserState();
 
   const navigate = useNavigate();
   useAuthStateChange();
-
-  const [loading, setLoading] = useState(false);
 
   const gotoHome = () => navigate(RoutePaths.Root);
 
@@ -49,7 +53,7 @@ export function MainAppBar({
     }
   };
   const handleLogin = async () => {
-    setLoading(true);
+    dispatch(userActions.setLoading(true));
 
     const result = await FirebaseService.Auth.signInWithGithub();
 
@@ -62,7 +66,7 @@ export function MainAppBar({
       }
     }
 
-    setLoading(false);
+    dispatch(userActions.setLoading(false));
   };
 
   return (
