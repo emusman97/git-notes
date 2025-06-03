@@ -25,7 +25,10 @@ export function CodeBlock({
             ...style,
             padding: 10,
             height: '100%',
-            whiteSpace: 'pre-wrap', // Wrap long lines to prevent horizontal overflow
+            whiteSpace: 'pre-wrap', // Wrap long lines
+            wordBreak: 'break-word', // Break long words to prevent overflow
+            overflowX: 'auto', // Add horizontal scrollbar for very long lines
+            boxSizing: 'border-box', // Ensure padding is included in width
             ...preElStyles,
           }}
         >
