@@ -37,4 +37,5 @@ export const AppStrings = {
   FileIsRequired: 'At least one file is required',
   GistCreated: 'Gist created',
   CreateGistError: 'Something went wrong while creating gist',
+  DuplicateFileError: 'A file with this name has already been added.',
 } as const;

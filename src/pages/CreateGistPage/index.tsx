@@ -20,6 +20,7 @@ import { File, VisuallyHiddenInput } from './components';
 import { FILENAME_REGEX } from './constants';
 import type { FormFields } from './types';
 import { useAlertContext } from '@/context';
+import { v4 as uuidv4 } from 'uuid';
 
 export function CreateGistPage(): JSX.Element {
   const { showAlert } = useAlertContext();
@@ -44,7 +45,11 @@ export function CreateGistPage(): JSX.Element {
     const files = event.target.files ?? [];
     const file = files[0];
 
-    append({ content: null, file });
+    if (file) {
+      append({ fileId: `${file.name}-${uuidv4()}`, content: null, file });
+      event.target.value = '';
+    }
+  };
   };
   const handleDelete = (index: number) => () => remove(index);
   const handleContentLoad = (index: number) => (content: string) => {
@@ -112,7 +117,7 @@ export function CreateGistPage(): JSX.Element {
 
           {fields.map((field, index) => (
             <Controller
-              key={`${field.file.name}-${index}`}
+              key={field.fileId}
               control={control}
               name={`files.${index}`}
               rules={{

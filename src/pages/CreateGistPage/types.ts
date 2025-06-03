@@ -1,4 +1,5 @@
 export interface UploadFile {
+  fileId: string;
   content: string | null;
   file: File;
 }
