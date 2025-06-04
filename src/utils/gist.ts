@@ -1,5 +1,7 @@
 import type { GistFiles, GistId } from '@/models';
 
+const FILENAME_REGEX = /^(?!gistfile[0-9]+).*$/i;
+
 const LanguageMap: Record<string, string> = {
   JavaScript: 'javascript',
   Python: 'python',
@@ -73,3 +75,6 @@ export const formatNumber = (num: number): string => {
   }
   return `${sign}${absNum}`;
 };
+
+export const isValidFileName = (filename: string) =>
+  FILENAME_REGEX.test(filename);

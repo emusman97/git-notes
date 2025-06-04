@@ -1,6 +1,8 @@
 import { MainLayout, PageHeadingContainer } from '@/components';
 import { AppStrings } from '@/constants';
+import { useAlertContext } from '@/context';
 import { useCreateGistMutation, type FilesPayload } from '@/core';
+import { isValidFileName } from '@/utils';
 import {
   Button,
   FormControl,
@@ -16,11 +18,9 @@ import {
   useForm,
   type SubmitHandler,
 } from 'react-hook-form';
-import { File, VisuallyHiddenInput } from './components';
-import { FILENAME_REGEX } from './constants';
-import type { FormFields } from './types';
-import { useAlertContext } from '@/context';
 import { v4 as uuidv4 } from 'uuid';
+import { File, VisuallyHiddenInput } from './components';
+import type { FormFields } from './types';
 
 export function CreateGistPage(): JSX.Element {
   const { showAlert } = useAlertContext();
@@ -128,7 +128,7 @@ export function CreateGistPage(): JSX.Element {
               name={`files.${index}`}
               rules={{
                 validate: (value) =>
-                  FILENAME_REGEX.test(value.file.name)
+                  isValidFileName(value.file.name)
                     ? true
                     : AppStrings.InvalidFilename,
               }}
