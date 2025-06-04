@@ -3,13 +3,7 @@ import { AppStrings } from '@/constants';
 import { useAlertContext } from '@/context';
 import { useCreateGistMutation, type FilesPayload } from '@/core';
 import { isValidFileName } from '@/utils';
-import {
-  Button,
-  FormControl,
-  FormHelperText,
-  OutlinedInput,
-  Stack,
-} from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import type { ChangeEventHandler, JSX } from 'react';
 import {
@@ -19,7 +13,7 @@ import {
   type SubmitHandler,
 } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
-import { File, VisuallyHiddenInput } from './components';
+import { File, InputField, VisuallyHiddenInput } from './components';
 import type { FormFields } from './types';
 
 export function CreateGistPage(): JSX.Element {
@@ -103,23 +97,17 @@ export function CreateGistPage(): JSX.Element {
 
       <Stack width="100%" alignItems="center">
         <Stack component={'form'} width="50%" onSubmit={handleSubmit(onSubmit)}>
-          <FormControl>
-            <OutlinedInput
-              placeholder={AppStrings.GistDescription}
-              error={!!errors.description}
-              {...register('description', {
-                required: {
-                  value: true,
-                  message: AppStrings.DescriptionEmpty,
-                },
-              })}
-            />
-            {!!errors.description && (
-              <FormHelperText error={!!errors.description}>
-                {errors.description.message}
-              </FormHelperText>
-            )}
-          </FormControl>
+          <InputField
+            placeholder={AppStrings.GistDescription}
+            error={!!errors.description}
+            errorText={errors.description?.message}
+            {...register('description', {
+              required: {
+                value: true,
+                message: AppStrings.DescriptionEmpty,
+              },
+            })}
+          />
 
           {fields.map((field, index) => (
             <Controller
