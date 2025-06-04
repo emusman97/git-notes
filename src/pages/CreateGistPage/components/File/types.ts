@@ -1,6 +1,6 @@
 import type { Callback } from '@/types';
-import type { UploadFile } from '../../types';
 import type { FieldError } from 'react-hook-form';
+import type { UploadFile } from '../../types';
 
 export interface FileProps {
   data: UploadFile;

@@ -1,9 +1,4 @@
-export interface UploadFile {
-  fileId: string;
-  content: string | null;
-  file: File;
-}
-export type UploadFiles = UploadFile[];
+import type { UploadFiles } from '../../types';
 
 export interface FormFields {
   description: string;
