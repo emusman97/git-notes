@@ -78,7 +78,7 @@ const fetchCount = async (endpoint: string) => {
   return createApiSuccessResult(count, lastRes!);
 };
 
-const starUnStarGist = (gistId: GistId, starOp: StarOperation) =>
+const modifyStar = (gistId: GistId, starOp: StarOperation) =>
   GistsApiHandler.makeApiRequest({
     endpoint: ApiEndpoints.Star(gistId),
     method: starOp === 'star' ? HttpMethods.Put : HttpMethods.Delete,
@@ -111,8 +111,8 @@ export const Gists = {
 
     return response.code === 204;
   },
-  star: (gistId: GistId) => starUnStarGist(gistId, 'star'),
-  unStar: (gistId: GistId) => starUnStarGist(gistId, 'unstar'),
+  star: (gistId: GistId) => modifyStar(gistId, 'star'),
+  unStar: (gistId: GistId) => modifyStar(gistId, 'unstar'),
 
   fetchGistForksCount: async (gistId: GistId) =>
     fetchCount(ApiEndpoints.Forks(gistId)),
