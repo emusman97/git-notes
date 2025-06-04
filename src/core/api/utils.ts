@@ -19,7 +19,7 @@ export function createRequestConfig<D>(requestConfig: ApiRequestConfig<D>) {
     axiosReqConfig.params = requestConfig.query;
   }
 
-  axiosReqConfig.withAuth = requestConfig.withAuth;
+  axiosReqConfig.withAuth = requestConfig.withAuth ?? true;
   axiosReqConfig.accessToken = requestConfig.accessToken;
 
   if (requestConfig.data && isObjectNotEmpty(requestConfig.data)) {

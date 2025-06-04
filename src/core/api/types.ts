@@ -24,7 +24,7 @@ export type HttpMethod = keyof typeof HttpMethods;
 type ApiRequestConfigBase = {
   endpoint: string;
   method: HttpMethod;
-  withAuth: boolean;
+  withAuth?: boolean;
   accessToken?: string;
   query?: Record<string, string>;
 };

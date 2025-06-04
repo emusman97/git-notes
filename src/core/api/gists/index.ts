@@ -59,7 +59,6 @@ const fetchCount = async (endpoint: string) => {
       await GistsApiHandler.makeApiRequest<GetGenericDataResponse>({
         endpoint: endpoint,
         method: HttpMethods.Get,
-        withAuth: true,
       });
 
     if (response.failure) {
@@ -82,14 +81,12 @@ const modifyStar = (gistId: GistId, starOp: StarOperation) =>
   GistsApiHandler.makeApiRequest({
     endpoint: ApiEndpoints.Star(gistId),
     method: starOp === 'star' ? HttpMethods.Put : HttpMethods.Delete,
-    withAuth: true,
   });
 
 export const Gists = {
   fetchGists: (page: number) =>
     fetchGists({
       page,
-      withAuth: true,
       public: false,
       itemsPerPage: DEFAULT_ITEMS_PER_PAGE,
     }),
@@ -106,7 +103,6 @@ export const Gists = {
     const response = await GistsApiHandler.makeApiRequest({
       endpoint: ApiEndpoints.Star(gistId),
       method: HttpMethods.Get,
-      withAuth: true,
     });
 
     return response.code === 204;
@@ -120,14 +116,12 @@ export const Gists = {
     GistsApiHandler.makeApiRequest<Gist>({
       endpoint: ApiEndpoints.Forks(id),
       method: HttpMethods.Post,
-      withAuth: true,
     }),
 
   create: (gist: CreateGistRequest) =>
     GistsApiHandler.makeApiRequest<Gist, CreateGistRequest>({
       endpoint: ApiEndpoints.Root,
       method: HttpMethods.Post,
-      withAuth: true,
       data: gist,
     }),
 } as const;

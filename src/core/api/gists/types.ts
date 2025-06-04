@@ -1,6 +1,6 @@
 import type { Gists } from '@/models';
 export interface FetchGistsRequestParams {
-  withAuth: boolean;
+  withAuth?: boolean;
   page: number;
   itemsPerPage: number;
   public: boolean;
