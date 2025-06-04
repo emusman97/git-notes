@@ -4,13 +4,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { UseGetGists } from './types';
 import { useSelectIsAuthenticated } from '@/state';
 
-export function useGists({ ...restParams }: UseGetGists) {
+export function useGists({ public: isPublic = false }: UseGetGists) {
   const isAuthenticated = useSelectIsAuthenticated();
 
   const [page, setPage] = useState(1);
   const { data, isFetching, isLoading, isSuccess, hasNextPage, fetchNextPage } =
     useGetGistsQuery({
-      public: restParams.public ?? false,
+      public: isPublic,
       withAuth: isAuthenticated,
     });
 
