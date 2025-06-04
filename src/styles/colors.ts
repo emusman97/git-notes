@@ -9,4 +9,8 @@ export const Colors = {
   searchBorder: '#FFFFFF80',
   tableHeader: '#e3e3e3',
   tableHeaderDark: '#4a4a4a',
+  addFileButton: '#EFEFEF',
+  addFileButtonDark: '#333333',
+  fileNameContainerBg: '#FAFAFA',
+  fileNameContainerBgDark: '#3C3C3C',
 } as const;

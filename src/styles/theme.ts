@@ -31,6 +31,12 @@ export const theme = createTheme({
         tableHeader: {
           main: Colors.tableHeader,
         },
+        fileNameContainerBg: {
+          main: Colors.fileNameContainerBg,
+        },
+        addFileButton: {
+          main: Colors.addFileButton,
+        },
       },
     },
     dark: {
@@ -48,6 +54,12 @@ export const theme = createTheme({
         },
         tableHeader: {
           main: Colors.tableHeaderDark,
+        },
+        fileNameContainerBg: {
+          main: Colors.fileNameContainerBgDark,
+        },
+        addFileButton: {
+          main: Colors.addFileButtonDark,
         },
       },
     },

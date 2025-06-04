@@ -10,7 +10,6 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { grey } from '@mui/material/colors';
 import { useEffect, type JSX } from 'react';
 import type { FileProps } from './types';
 
@@ -49,7 +48,9 @@ export function File({
       <Stack mt={2} component={Paper}>
         <Stack
           flexDirection="row"
-          sx={{ background: grey[200] }}
+          sx={(theme) => ({
+            background: theme.palette.fileNameContainerBg.main,
+          })}
           p={1}
           alignItems="center"
           gap={0.5}

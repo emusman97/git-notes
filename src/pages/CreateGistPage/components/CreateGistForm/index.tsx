@@ -1,21 +1,20 @@
 import { AppStrings } from '@/constants';
+import { useAlertContext } from '@/context';
 import { useCreateGistMutation, type FilesPayload } from '@/core';
+import { isValidFileName } from '@/utils';
 import { Button, Stack } from '@mui/material';
 import type { ChangeEventHandler, JSX } from 'react';
-import { InputField } from '../InputField';
 import {
   Controller,
   useFieldArray,
   useForm,
   type SubmitHandler,
 } from 'react-hook-form';
-import { useAlertContext } from '@/context';
-import type { FormFields } from './types';
 import { v4 as uuidv4 } from 'uuid';
 import { File } from '../File';
-import { isValidFileName } from '@/utils';
+import { InputField } from '../InputField';
 import { VisuallyHiddenInput } from '../VisuallyHiddenInput';
-import { grey } from '@mui/material/colors';
+import type { FormFields } from './types';
 
 export function CreateGistForm(): JSX.Element {
   const { showAlert } = useAlertContext();
@@ -140,7 +139,15 @@ export function CreateGistForm(): JSX.Element {
             component="label"
             variant="contained"
             color="primary"
-            sx={{ background: grey[200], color: 'primary.main' }}
+            sx={(theme) => ({
+              background: theme.palette.addFileButton.main,
+              ...theme.applyStyles('light', {
+                color: 'primary.main',
+              }),
+              ...theme.applyStyles('dark', {
+                color: 'secondary.main',
+              }),
+            })}
           >
             {AppStrings.AddFile}
             <VisuallyHiddenInput type="file" onChange={handleFileChange} />
